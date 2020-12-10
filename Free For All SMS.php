@@ -26,6 +26,10 @@ function test_plugin_setup_menu(){
 }
  
 function test_init(){
+	include(dirname(__FILE__).'/class.setting.php');
+	$settingClass = new setting();
+	$setting = $settingClass->get();
+	
 	echo "<h1>Hello World!</h1>";
 }
 
@@ -37,7 +41,6 @@ add_action('admin_menu', 'test_plugin_setup_menu');
 function insert_sms_box() {
 	if (!is_page()) {
 		include(dirname(__FILE__).'/class.setting.php');
-
 		$settingClass = new setting();
 		$setting = $settingClass->get();
 

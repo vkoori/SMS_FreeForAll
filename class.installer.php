@@ -34,19 +34,20 @@ class Installer
 	}
 
 	private function pages () {
-		$title = wp_strip_all_tags( 'My Custom Page' );
+		$title = wp_strip_all_tags( 'SMS Page' );
 
 		if(get_page_by_title( $title ) == NULL) {
 			$my_post = array(
 				'post_title'	=> $title,
-				'post_content'	=> 'My custom page content',
+				'post_content'	=> '[free_for_all]',
 				'post_status'	=> 'publish',
 				'post_author'	=> 1,
 				'post_type'		=> 'page',
 			);
 
-			wp_insert_post( $my_post );
-		}
+			$postId = wp_insert_post( $my_post );
 
+			// set setting theme
+		}
 	}
 }

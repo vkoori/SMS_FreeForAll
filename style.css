@@ -1,3 +1,50 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
+.free_for_all_color_default{
+	background-color: #e27a4e;
+	color: #ffffff;
+}
+.free_for_all_color_gray{
+	background-color: #eeeeee;
+	color: #000000;
+}
+.free_for_all_border_default{
+	border: 1px solid #e27a4e;
+}
+.free_for_all_border_gray{
+	border: 1px solid #dddddd;
+}
+.bg-white{
+	background: #ffffff;
+}
+.px-1{
+	padding-right: 1em;
+	padding-left: 1em;
+}
+.free_for_all_radius{
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+.text-center{
+	text-align: center;
+}
+.free_for_all_row{
+	margin: 1em 0;
+}
+.d-ib{
+	display: inline-block;vertical-align: middle;
+}
+.relative{
+	position: relative;
+}
 #free_for_all_click_me_default{
 	position: fixed;
 	bottom: 0.5em;
@@ -6,23 +53,22 @@
 #free_for_all_click_me_text_default{
 	font-size: 0.8em;
 	position: fixed;
-    bottom: calc(0.5em + 70px);
-    right: 0;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-	background-color: #e27a4e;
-	color: #fff;
+	bottom: calc(0.5em + 70px);
+	right: 0;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
 	padding: 1.1em 2.1em 1.1em 1.1em;
+	border-radius: 6px;
 }
 #free_for_all_click_me_text_default:after {
-  content: "";
-  position: absolute;
-  right: 30px;
-  bottom: -15px;
-  border-top: 15px solid #e27a4e;
-  border-right: 15px solid transparent;
-  border-left: 15px solid transparent;
-  border-bottom: none;
+	content: "";
+	position: absolute;
+	right: 30px;
+	bottom: -15px;
+	border-top: 15px solid #e27a4e;
+	border-right: 15px solid transparent;
+	border-left: 15px solid transparent;
+	border-bottom: none;
 }
 #free_for_all_click_me_close_default{
 	position: absolute;
@@ -33,4 +79,44 @@
 	background-size: cover;
 	right: 6px;
 	top: 6px;
+}
+#free_for_all_step_box{direction: rtl;text-align: right;}
+#free_for_all_step_box .free_for_all_input{
+	height: 2em;
+	border: solid 1px #aaaaaa;
+	outline: none;
+	border-radius: 6px;
+}
+#free_for_all_step_box .free_for_all_input_default:focus,
+#free_for_all_step_box .free_for_all_input_default:active{
+	border: solid 1px #e27a4e;
+	outline: none;
+}
+.free_for_all_btn{
+	border: none;
+	cursor: pointer;
+	outline: none;
+	min-width: 100px;
+	height: 2em;
+	line-height: 2em;
+	text-align: center;
+	border-radius: 6px;
+}
+#progress-bar{
+	margin-bottom: 1em;
+	height: 1.5em;
+	width: 100%;
+}
+#progress-load{
+	position: absolute;
+	width: 20%;
+	height: 100%;
+	right: 0;
+	text-align: center;
+	line-height: 1.875em;
+	font-size: 0.8em;
+}
+.progress-bar-striped {
+	background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+	background-size: 1rem 1rem;
 }

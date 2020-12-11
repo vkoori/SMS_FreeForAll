@@ -24,7 +24,9 @@ class Installer
 						`pageid` bigint(20) UNSIGNED NOT NULL,
 						`theme` varchar(50) NOT NULL,
 						`freeSmsCount` smallint(5) UNSIGNED ZEROFILL NOT NULL,
-						`freeSmsTime` int(10) UNSIGNED ZEROFILL DEFAULT NULL COMMENT 'hours of expire'
+						`freeSmsTime` int(10) UNSIGNED ZEROFILL DEFAULT NULL COMMENT 'hours of expire',
+						`user_api` varchar(60) NOT NULL,
+						`pass_api` varchar(255) NOT NULL
 					) ENGINE=INNODB $charset_collate;
 
 					-- --------------------------------------------------------
@@ -105,13 +107,17 @@ class Installer
 					'pageid' 		=> $postId,
 					'theme' 		=> 'default',
 					'freeSmsCount' 	=> '3',
-					'freeSmsTime' 	=> '24'
+					'freeSmsTime' 	=> '24',
+					'user_api' 		=> '',
+					'pass_api' 		=> ''
 				),
 				array(
 					'%d',
 					'%s',
 					'%d',
-					'%d'
+					'%d',
+					'%s',
+					'%s'
 				) 
 			);
 

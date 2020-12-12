@@ -51,12 +51,35 @@ function myAjax(url, method, data, callBack) {
 	xmlhttp.send(data+"&action=myAjaxFunction");
 }
 
+var myCountDown;
 function updateForm(res) {
+	if (myCountDown)
+		clearInterval(myCountDown);
+	
 	var res = JSON.parse(res);
-	if (res['error'])
+	if (res['error']) {
 		alert(res['error']);
+		return;
+	}
 
+	document.getElementById("progress-bar").innerHTML = res['progress-bar'];
+	document.getElementById("free_for_all_step_title").innerHTML = res['title'];
+	document.getElementById("free_for_all_step_form").innerHTML = res['inner-form'];
+	countDown();
+}
 
+function countDown() {
+	var count_down = document.getElementById("count-down");
+	if (count_down) {
+		var remind = count_down.getAttribute("data-remind");
 
-	console.log(res);
+		myCountDown = setInterval( function() {
+			count_down.innerText = Math.floor(remind/60) + ':' + (remind%60);
+			remind --;
+			if (remind == 0) {
+				clearInterval(myCountDown);
+				window.location.href = window.location.href;
+			}
+		}, 1000);
+	}
 }

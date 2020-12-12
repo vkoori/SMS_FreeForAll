@@ -19,12 +19,11 @@ class Sms_page
 	}
 
 	public function get_phone($setting) {
-		var_dump($setting);
 		return '
-		<div id="progress-bar" class="free_for_all_color_gray relative"><div id="progress-load" class="progress-bar-striped free_for_all_color_'.$setting->theme.'">20%</div></div>
+		<div id="progress-bar" class="free_for_all_color_gray relative text-center">0%</div>
 		<div id="free_for_all_step_box" class="bg-white free_for_all_border_gray free_for_all_radius">
-			<div class="free_for_all_color_gray free_for_all_border_gray px-1">شماره موبایل خود را وارد نمایید:</div>
-			<form class="text-center" action="'.admin_url('admin-ajax.php').'" method="POST" accept-charset="utf-8" onsubmit="return nextStep(this);">
+			<div id="free_for_all_step_title" class="free_for_all_color_gray free_for_all_border_gray px-1">شماره موبایل خود را وارد نمایید:</div>
+			<form id="free_for_all_step_form" class="text-center" action="'.admin_url('admin-ajax.php').'" method="POST" accept-charset="utf-8" onsubmit="return nextStep(this);">
 				<div class="free_for_all_row" dir="ltr">
 					<span class="d-ib">09</span><input class="d-ib free_for_all_input free_for_all_input_'.$setting->theme.'" type="number" name="mobile">
 				</div>

@@ -83,3 +83,15 @@ function countDown() {
 		}, 1000);
 	}
 }
+
+function getTexts(sid) {
+	var url = document.getElementById("free_for_all_step_form").getAttribute("action")+"?"+"action=getTexts&sid="+sid;
+	var method = "GET";
+	var data = "";
+	var callBack = updateTexts;
+	myAjax(url, method, data, callBack);
+}
+
+function updateTexts(res) {
+	console.log(res);
+}

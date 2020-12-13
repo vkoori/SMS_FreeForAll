@@ -17,6 +17,27 @@ class smsQueries
 	/**
 	 * 
 	 */
+	public function update_setting($data) {
+		global $wpdb;
+		$setting = $wpdb->update('free_sms_setting', 
+			$data, array(
+				'id' => 1
+			), array(
+				'%d',
+				'%s',
+				'%d',
+				'%d',
+				'%s',
+				'%s'
+			)
+		);
+
+		return $setting;
+	}
+
+	/**
+	 * 
+	 */
 	public function setUser($data) {
 
 		global $wpdb;
@@ -121,7 +142,6 @@ class smsQueries
 	 * 
 	 */
 	public function setProfile($data) {
-
 		global $wpdb;
 		$profile = $wpdb->insert('free_sms_profile', 
 						$data, array(
@@ -135,5 +155,61 @@ class smsQueries
 		return $profile;
 	}
 
-	
+	/**
+	 * 
+	 */
+	public function get_subjects() {
+		global $wpdb;
+		$subjects = $wpdb->get_results("SELECT * FROM `free_sms_subject`");
+
+		return $subjects;
+	}
+
+	/**
+	 * 
+	 */
+	public function texts_with_subjectid($sid) {
+		global $wpdb;
+		$texts = $wpdb->get_results("SELECT * FROM `free_sms_quote` WHERE `subjectid`=$sid");
+
+		return $texts;
+	}
+
+	/**
+	 * 
+	 */
+	public function all_texts() {
+		global $wpdb;
+		$texts = $wpdb->get_results("SELECT `message`, `subject` FROM `free_sms_quote`
+									INNER JOIN `free_sms_subject`
+									ON `subjectid`=`free_sms_subject`.`id`");
+
+		return $texts;
+	}
+
+	/**
+	 * 
+	 */
+	public function overwite_subjects($subjects) {
+		global $wpdb;
+		$wpdb->query('DELETE FROM `free_sms_subject`');
+		$wpdb->query('ALTER TABLE `free_sms_subject` AUTO_INCREMENT = 1');
+
+		$subjects = $wpdb->get_results("INSERT INTO `free_sms_subject` (`subject`) VALUES {$subjects}");
+
+		return $subjects;
+	}
+
+	/**
+	 * 
+	 */
+	public function overwite_quotes($quotes) {
+		global $wpdb;
+		$wpdb->query('DELETE FROM `free_sms_quote`');
+		$wpdb->query('ALTER TABLE `free_sms_quote` AUTO_INCREMENT = 1');
+
+		$quotes = $wpdb->get_results("INSERT INTO `free_sms_quote` (`subjectid`,`message`) VALUES {$quotes}");
+
+		return $quotes;
+	}
 }

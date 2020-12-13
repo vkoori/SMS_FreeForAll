@@ -105,8 +105,27 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				</div>';
 			$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_'.$setting->theme.'" style="width: 50%;">50%</div>';
 		} else {
+			$subjects = $smsQueriesClass->get_subjects();
+
 			$result["title"] = 'متن پیام را انتخاب کنید:';
-			$result["inner-form"] = '';
+			$result["inner-form"] = '
+				<div class="free_for_all_row">
+					<label for="subject">موضوع</label>
+					<select class="d-ib free_for_all_input free_for_all_input_default" name="subject" id="subject" onchange="getTexts(this.value);" required="required">
+						<option value="">انتخاب کنید</option>';
+						foreach ($subjects as $s) {
+							$result["inner-form"] .= '<option value="'.$s->id.'">'.$s->subject.'</option>';
+						}
+					$result["inner-form"] .= '</select>
+				</div>
+				<div class="free_for_all_row">
+					<label for="text">متن پیامک</label>
+					<select class="d-ib free_for_all_input free_for_all_input_default" name="text" id="text" onchange="setVars(this.value);" required="required">
+					</select>
+				</div>
+				<div class="free_for_all_row">
+					<button type="submit" class="free_for_all_btn free_for_all_color_default">بعدی</button>
+				</div>';
 			$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_'.$setting->theme.'" style="width: 75%;">75%</div>';
 		}
 		
@@ -120,7 +139,33 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		);
 		$profile = $smsQueriesClass->setProfile($data);
 
+		$subjects = $smsQueriesClass->get_subjects();
+
+		$result["title"] = 'متن پیام را انتخاب کنید:';
+		$result["inner-form"] = '
+			<div class="free_for_all_row">
+				<label for="subject">موضوع</label>
+				<select class="d-ib free_for_all_input free_for_all_input_default" name="subject" id="subject" onchange="getTexts(this.value);" required="required">
+					<option value="">انتخاب کنید</option>';
+					foreach ($subjects as $s) {
+						$result["inner-form"] .= '<option value="'.$s->id.'">'.$s->subject.'</option>';
+					}
+				$result["inner-form"] .= '</select>
+			</div>
+			<div class="free_for_all_row">
+				<label for="text">متن پیامک</label>
+				<select class="d-ib free_for_all_input free_for_all_input_default" name="text" id="text" onchange="setVars(this.value);" required="required">
+				</select>
+			</div>
+			<div class="free_for_all_row">
+				<button type="submit" class="free_for_all_btn free_for_all_color_default">بعدی</button>
+			</div>';
+		$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_'.$setting->theme.'" style="width: 75%;">75%</div>';
+
+		echo json_encode($result);
 	} else {
+		// text and variables and to phone number
+
 		// if (publicKey == publicKey AND date == 2001) then send message
 	}
 } else {

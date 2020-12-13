@@ -21,15 +21,86 @@ register_activation_hook(__file__, 'installer');
 /*
 * create an administration menu item
 */
-function test_plugin_setup_menu(){
-	add_menu_page( 'Test Plugin Page', 'Test Plugin', 'manage_options', 'test-plugin', 'test_init' );
+function sms_plugin_setup_menu(){
+	add_menu_page('پیامک رایگان', 'پیامک رایگان', 'manage_options', 'free-sms-setting', 'admin_sms_setting', 'dashicons-welcome-write-blog');
+	add_submenu_page( 'free-sms-setting', 'تنظیمات', 'تنظیمات', 'manage_options', 'free-sms-setting', 'admin_sms_setting');
+	add_submenu_page( 'free-sms-setting', 'متن پیامک', 'متن پیامک', 'manage_options', 'free-sms-text', 'admin_sms_text');
 }
  
-function test_init(){
-	echo "<h1>Hello World!</h1>";
+function admin_sms_setting(){
+	include(dirname(__FILE__).'/class.smsQueries.php');
+	$smsQueriesClass = new smsQueries();
+
+	if (sizeof($_POST) > 0) {
+		$data = array(
+			'pageid' => $_POST['pageid'],
+			'theme' => $_POST['theme'],
+			'freeSmsCount' => $_POST['freeSmsCount'],
+			'freeSmsTime' => $_POST['freeSmsTime'],
+			'user_api' => $_POST['user_api'],
+			'pass_api' => $_POST['pass_api']
+		);
+		$smsQueriesClass->update_setting($data);
+	}
+
+	$setting = $smsQueriesClass->setting();
+
+	include(dirname(__FILE__).'/class.free-sms-page.php');
+	$sms = new Sms_page();
+	$html = $sms->admin_sms_setting($setting);
+
+	echo $html;
 }
 
-add_action('admin_menu', 'test_plugin_setup_menu');
+function admin_sms_text () {
+	include(dirname(__FILE__).'/class.smsQueries.php');
+	$smsQueriesClass = new smsQueries();
+
+	if (sizeof($_FILES) > 0) {
+		include(dirname(__FILE__).'/class.upload-xlsx.php');
+		$upload = new Upload();
+		$upload = $upload->upload($_FILES['xlsx']);
+
+		if (isset($upload["error"])) {
+			echo $upload["error"];
+			exit();
+		}
+
+		include(dirname(__FILE__).'/SimpleXLSX.php');
+		if ( $xlsx = SimpleXLSX::parse($upload["success"]) ) {
+			$rows = $xlsx->rows();
+			$subjects = array();
+			$texts = array();
+			foreach ($rows as $row) {
+				if (!in_array("('".$row[1]."')", $subjects))
+					array_push($subjects, "('".$row[1]."')");
+				
+				array_push($texts, "(".(array_search("('".$row[1]."')", $subjects)+1).",'".$row[0]."')");
+			}
+			$subjects = implode(',', $subjects);
+			$smsQueriesClass->overwite_subjects($subjects);
+
+			$texts = implode(',', $texts);
+			$smsQueriesClass->overwite_quotes($texts);
+		} else {
+			echo SimpleXLSX::parseError();
+		}
+
+
+	}
+
+	$texts = $smsQueriesClass->all_texts();
+
+	include(dirname(__FILE__).'/class.free-sms-page.php');
+	$sms = new Sms_page();
+	$html = $sms->admin_sms_text();
+	echo $html;
+	$html = $sms->admin_sms_text2($texts);
+	echo $html;
+
+}
+
+add_action('admin_menu', 'sms_plugin_setup_menu');
 
 /*
 * create sms suggestion in all pages
@@ -88,3 +159,16 @@ function myAjaxFunction(){
 }
 add_action( 'wp_ajax_nopriv_myAjaxFunction', 'myAjaxFunction' );  
 add_action( 'wp_ajax_myAjaxFunction', 'myAjaxFunction' );
+
+function getTexts(){  
+	header('Content-type: application/json');
+
+	include(dirname(__FILE__).'/class.smsQueries.php');
+	$smsQueriesClass = new smsQueries();
+	$texts = $smsQueriesClass->texts_with_subjectid();
+
+	echo json_encode($result);
+	exit();
+}
+add_action( 'wp_ajax_nopriv_myAjaxFunction', 'getTexts' );  
+add_action( 'wp_ajax_myAjaxFunction', 'getTexts' );

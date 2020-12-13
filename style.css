@@ -81,8 +81,8 @@ input[type=number] {
 	top: 6px;
 }
 #free_for_all_step_box{direction: rtl;text-align: right;}
-input[type="text"].free_for_all_input, input[type="email"].free_for_all_input, input[type="url"].free_for_all_input, input[type="password"].free_for_all_input, input[type="search"].free_for_all_input, input[type="number"].free_for_all_input, input[type="tel"].free_for_all_input, input[type="range"].free_for_all_input, input[type="date"].free_for_all_input, input[type="month"].free_for_all_input, input[type="week"].free_for_all_input, input[type="time"].free_for_all_input, input[type="datetime"].free_for_all_input, input[type="datetime-local"].free_for_all_input, input[type="color"].free_for_all_input{
-	height: 2em;
+input[type="text"].free_for_all_input, input[type="email"].free_for_all_input, input[type="url"].free_for_all_input, input[type="password"].free_for_all_input, input[type="search"].free_for_all_input, input[type="number"].free_for_all_input, input[type="tel"].free_for_all_input, input[type="range"].free_for_all_input, input[type="date"].free_for_all_input, input[type="month"].free_for_all_input, input[type="week"].free_for_all_input, input[type="time"].free_for_all_input, input[type="datetime"].free_for_all_input, input[type="datetime-local"].free_for_all_input, input[type="color"].free_for_all_input, select.free_for_all_input{
+	/*height: 2em;*/
 	border: solid 1px #aaaaaa;
 	outline: none;
 	border-radius: 6px;

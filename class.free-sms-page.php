@@ -35,11 +35,89 @@ class Sms_page
 		';
 	}
 
-	public function get_subjects($setting) {
-		
+	public function admin_sms_setting($setting) {
+		return '
+		<div class="wrap">
+			<h1 class="wp-heading-inline">تنظیمات افزونه</h1>
+			<form action="" method="POST" accept-charset="utf-8">
+				<table class="form-table" role="presentation">
+					<tbody>
+						<tr>
+							<th scope="row"><label for="pageid">آی دی صفحه پیامک</label></th>
+							<td><input name="pageid" type="number" id="pageid" value="'.$setting->pageid.'" class="regular-text"></td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="theme">تم</label></th>
+							<td>
+								<select name="theme" id="theme">
+									<option value="default">پیشفرض</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="freeSmsCount">تعداد پیامک رایگان</label></th>
+							<td><input name="freeSmsCount" type="number" id="freeSmsCount" value="'.intval($setting->freeSmsCount).'" class="regular-text"></td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="freeSmsTime">هر چند ساعت ریست شدن</label></th>
+							<td><input name="freeSmsTime" type="number" id="freeSmsTime" value="'.intval($setting->freeSmsTime).'" class="regular-text"></td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="user_api">یوزرنیم پنل پیامک</label></th>
+							<td><input name="user_api" type="text" id="user_api" value="'.$setting->user_api.'" class="regular-text"></td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="pass_api">رمز پنل پیامک</label></th>
+							<td><input name="pass_api" type="text" id="pass_api" value="'.$setting->pass_api.'" class="regular-text"></td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="ذخیره سازی"></p>
+			</form>
+		</div>
+		';
 	}
 
-	public function get_quotes($setting) {
-		
+	public function admin_sms_text() {
+		return '
+		<div class="wrap">
+			<h1 class="wp-heading-inline">متن پیامک ها</h1>
+			<form  method="post" enctype="multipart/form-data">
+				<p>ستون اول متن متعلق به پیامک ها و ستون دوم متعلق به دسته بندی است.</p>
+				<p>در متن پیامک ها به جای متغیرها از عبارت %s استفاده کنید.</p>
+				<table class="form-table" role="presentation">
+					<tbody>
+						<tr>
+							<th scope="row"><label for="pageid">فایل xlsx</label></th>
+							<td><input type="file" id="xlsx" name="xlsx"></input></td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="ذخیره سازی"></p>
+			</form>
+		</div>';
+	}
+
+	public function admin_sms_text2($texts) {
+		$html = '<hr>
+		<table class="wp-list-table widefat fixed striped">
+			<thead>
+				<tr>
+					<th><strong>موضوع</strong></th>
+					<th><strong>متن</strong></th>
+				</tr>
+			</thead>
+			<tbody>';
+				foreach ($texts as $text) {
+					$html .= '
+					<tr>
+						<td>'.$text->subject.'</td>
+						<td>'.$text->message.'</td>
+					</tr>';
+				}
+			$html .= '</tbody>
+		</table">';
+
+		return $html;
 	}
 }

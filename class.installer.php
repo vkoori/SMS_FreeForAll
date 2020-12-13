@@ -70,11 +70,10 @@ class Installer
 					CREATE TABLE `free_sms_sms` (
 						`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 						`userid` bigint(20) UNSIGNED NOT NULL,
-						`quoteid` bigint(20) UNSIGNED NOT NULL,
-						`params` varchar(255) NOT NULL,
+						`quote` varchar(255) UNSIGNED NOT NULL,
+						`to` char(11) NOT NULL,
 						`create_at` datetime NOT NULL DEFAULT current_timestamp(),
-						`send_time` datetime NOT NULL,
-						FOREIGN KEY (`quoteid`) REFERENCES `free_sms_quote` (`id`) ON DELETE CASCADE,
+						`send_time` datetime NOT NULL DEFAULT current_timestamp(),
 						FOREIGN KEY (`userid`) REFERENCES `free_sms_user` (`id`) ON DELETE CASCADE
 					) ENGINE=INNODB $charset_collate;
 			";
@@ -108,8 +107,8 @@ class Installer
 					'theme' 		=> 'default',
 					'freeSmsCount' 	=> '3',
 					'freeSmsTime' 	=> '24',
-					'user_api' 		=> '',
-					'pass_api' 		=> ''
+					'user_api' 		=> 'mpi_blog',
+					'pass_api' 		=> 'blog'
 				),
 				array(
 					'%d',

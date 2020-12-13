@@ -4,7 +4,7 @@ function free_for_all_click_me_close(id) {
 function nextStep(t) {
 	var url = t.getAttribute("action");
 	var method = t.getAttribute("method");
-	var data = serialize(t);
+	var data = serialize(t)+"&action=myAjaxFunction";
 
 	myAjax(url, method, data, updateForm);
 	return false;
@@ -48,7 +48,7 @@ function myAjax(url, method, data, callBack) {
 	xmlhttp.open(method, url, true);
 	xmlhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 	xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;');
-	xmlhttp.send(data+"&action=myAjaxFunction");
+	xmlhttp.send(data);
 }
 
 var myCountDown;
@@ -60,6 +60,9 @@ function updateForm(res) {
 	if (res['error']) {
 		alert(res['error']);
 		return;
+	} else if (res['refresh']) {
+		alert("پیامک ارسال شد");
+		window.location.href = window.location.href;
 	}
 
 	document.getElementById("progress-bar").innerHTML = res['progress-bar'];
@@ -85,7 +88,7 @@ function countDown() {
 }
 
 function getTexts(sid) {
-	var url = document.getElementById("free_for_all_step_form").getAttribute("action")+"?"+"action=getTexts&sid="+sid;
+	var url = document.getElementById("free_for_all_step_form").getAttribute("action")+"?"+"action=textsOfSubject&sid="+sid;
 	var method = "GET";
 	var data = "";
 	var callBack = updateTexts;
@@ -93,5 +96,11 @@ function getTexts(sid) {
 }
 
 function updateTexts(res) {
-	console.log(res);
+	var res = JSON.parse(res)["texts"];
+	var select = document.getElementById("text");
+	var options = '';
+	for (var i = 0; i < res.length; i++) {
+		options += '<option value="'+res[i]["id"]+'">'+res[i]["message"].replaceAll("%s", "-------")+'</option>';
+	}
+	select.innerHTML = options;
 }

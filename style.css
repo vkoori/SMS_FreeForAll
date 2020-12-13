@@ -87,6 +87,7 @@ input[type="text"].free_for_all_input, input[type="email"].free_for_all_input, i
 	outline: none;
 	border-radius: 6px;
 	max-width: 200px;
+	padding: 2px 0.5em;
 }
 #free_for_all_step_box .free_for_all_input_default:focus,
 #free_for_all_step_box .free_for_all_input_default:active{

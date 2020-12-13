@@ -178,6 +178,16 @@ class smsQueries
 	/**
 	 * 
 	 */
+	public function texts_with_id($id) {
+		global $wpdb;
+		$texts = $wpdb->get_results("SELECT * FROM `free_sms_quote` WHERE `id`=$id");
+
+		return $texts;
+	}
+
+	/**
+	 * 
+	 */
 	public function all_texts() {
 		global $wpdb;
 		$texts = $wpdb->get_results("SELECT `message`, `subject` FROM `free_sms_quote`
@@ -211,5 +221,41 @@ class smsQueries
 		$quotes = $wpdb->get_results("INSERT INTO `free_sms_quote` (`subjectid`,`message`) VALUES {$quotes}");
 
 		return $quotes;
+	}
+
+	/**
+	 * 
+	 */
+	public function count_of_use_sms($userid) {
+		global $wpdb;
+		$smsCount = $wpdb->get_results("SELECT COUNT(`id`) AS `count` FROM `free_sms_sms` WHERE `userid`={$userid}");
+
+		return $smsCount[0];
+	}
+
+	/**
+	 * 
+	 */
+	public function count_of_use_sms2($userid, $date) {
+		global $wpdb;
+		$smsCount = $wpdb->get_results("SELECT COUNT(`id`) AS `count` FROM `free_sms_sms` WHERE `userid`={$userid} AND `create_at`>'{$date}'");
+
+		return $smsCount[0];
+	}
+
+	/**
+	 * 
+	 */
+	public function insert_sms($data) {
+		global $wpdb;
+		$sms = $wpdb->insert('free_sms_sms', 
+					$data, array(
+						'%d',
+						'%s',
+						'%s'
+					) 
+				);
+
+		return $sms;
 	}
 }

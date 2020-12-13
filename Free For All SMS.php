@@ -36,7 +36,7 @@ function admin_sms_setting(){
 			'pageid' => $_POST['pageid'],
 			'theme' => $_POST['theme'],
 			'freeSmsCount' => $_POST['freeSmsCount'],
-			'freeSmsTime' => $_POST['freeSmsTime'],
+			'freeSmsTime' => ($_POST['freeSmsTime']=="") ? NULL : $_POST['freeSmsTime'],
 			'user_api' => $_POST['user_api'],
 			'pass_api' => $_POST['pass_api']
 		);
@@ -59,7 +59,7 @@ function admin_sms_text () {
 	if (sizeof($_FILES) > 0) {
 		include(dirname(__FILE__).'/class.upload-xlsx.php');
 		$upload = new Upload();
-		$upload = $upload->upload($_FILES['xlsx']);
+		$upload = $upload->uploadfile($_FILES['xlsx']);
 
 		if (isset($upload["error"])) {
 			echo $upload["error"];
@@ -160,15 +160,19 @@ function myAjaxFunction(){
 add_action( 'wp_ajax_nopriv_myAjaxFunction', 'myAjaxFunction' );  
 add_action( 'wp_ajax_myAjaxFunction', 'myAjaxFunction' );
 
-function getTexts(){  
+function textsOfSubject() {
 	header('Content-type: application/json');
 
+	$sid = $_GET["sid"];
 	include(dirname(__FILE__).'/class.smsQueries.php');
 	$smsQueriesClass = new smsQueries();
-	$texts = $smsQueriesClass->texts_with_subjectid();
+	$texts = $smsQueriesClass->texts_with_subjectid($sid);
 
+	$result = array(
+		'texts' => $texts
+	);
 	echo json_encode($result);
 	exit();
 }
-add_action( 'wp_ajax_nopriv_myAjaxFunction', 'getTexts' );  
-add_action( 'wp_ajax_myAjaxFunction', 'getTexts' );
+add_action( 'wp_ajax_nopriv_textsOfSubject', 'textsOfSubject' );  
+add_action( 'wp_ajax_textsOfSubject', 'textsOfSubject' );

@@ -3,11 +3,9 @@
 /**
  * 
  */
-class Upload
-{
+class Upload {
 	
-	public function upload($file)
-	{
+	public function uploadfile($file) {
 		$result = array();
 		$target_dir = dirname(__FILE__)."/uploads/";
 		$target_file = $target_dir . basename($file["name"]);

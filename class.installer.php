@@ -70,7 +70,7 @@ class Installer
 					CREATE TABLE `free_sms_sms` (
 						`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 						`userid` bigint(20) UNSIGNED NOT NULL,
-						`quote` varchar(255) UNSIGNED NOT NULL,
+						`quote` varchar(255) NOT NULL,
 						`to` char(11) NOT NULL,
 						`create_at` datetime NOT NULL DEFAULT current_timestamp(),
 						`send_time` datetime NOT NULL DEFAULT current_timestamp(),

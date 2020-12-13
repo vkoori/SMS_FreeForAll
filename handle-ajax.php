@@ -221,7 +221,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			$smsCount = $smsQueriesClass->count_of_use_sms2($userid, $date);
 		}
 
-		if ($smsCount->count > $setting->freeSmsCount) {
+		if ($smsCount->count >= $setting->freeSmsCount) {
 			$result['error'] = 'تعداد پیامک رایگان شما به پایان رسیده است.';
 			echo json_encode($result);
 			exit();

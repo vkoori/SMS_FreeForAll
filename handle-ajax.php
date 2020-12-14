@@ -44,8 +44,8 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				'api' 		=> '5'
 			);
 
-			$sms = $smsQueriesClass->sendsms($data);
-			$result['sms'] = $sms;
+			// $sms = $smsQueriesClass->sendsms($data);
+			// $result['sms'] = $sms;
 		}
 
 		$key_generate_date = (gettype($user) == "array") ? $user['key_generate_date'] : $user->key_generate_date ;
@@ -61,9 +61,9 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					<span id="count-down" data-remind="'.$remind.'"></span>
 				</div>
 				<div class="free_for_all_row">
-					<button type="submit" class="free_for_all_btn free_for_all_color_default">بعدی</button>
+					<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">بعدی</button>
 				</div>';
-		$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_'.$setting->theme.'" style="width: 25%;">25%</div>';
+		$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_default" style="width: 25%;">25%</div>';
 
 		echo json_encode($result);
     } elseif (isset($_POST["private"])) {
@@ -102,9 +102,9 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					</select>
 				</div>
 				<div class="free_for_all_row">
-					<button type="submit" class="free_for_all_btn free_for_all_color_default">بعدی</button>
+					<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">بعدی</button>
 				</div>';
-			$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_'.$setting->theme.'" style="width: 50%;">50%</div>';
+			$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_default" style="width: 50%;">50%</div>';
 		} else {
 			$subjects = $smsQueriesClass->get_subjects();
 
@@ -126,9 +126,9 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					</select>
 				</div>
 				<div class="free_for_all_row">
-					<button type="submit" class="free_for_all_btn free_for_all_color_default">بعدی</button>
+					<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">بعدی</button>
 				</div>';
-			$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_'.$setting->theme.'" style="width: 75%;">75%</div>';
+			$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_default" style="width: 75%;">75%</div>';
 		}
 		
 		echo json_encode($result);
@@ -168,9 +168,9 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				</select>
 			</div>
 			<div class="free_for_all_row">
-				<button type="submit" class="free_for_all_btn free_for_all_color_default">بعدی</button>
+				<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">بعدی</button>
 			</div>';
-		$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_'.$setting->theme.'" style="width: 75%;">75%</div>';
+		$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_default" style="width: 75%;">75%</div>';
 
 		echo json_encode($result);
 	} elseif(isset($_POST["text"])) {
@@ -197,9 +197,9 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			}
 			$result["inner-form"] .= '
 			<div class="free_for_all_row">
-				<button type="submit" class="free_for_all_btn free_for_all_color_default">ارسال</button>
+				<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">ارسال</button>
 			</div>';
-		$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_'.$setting->theme.'" style="width: 100%;">99%</div>';
+		$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_default" style="width: 100%;">99%</div>';
 
 
 		echo json_encode($result);
@@ -245,10 +245,10 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			'password' 	=> $setting->pass_api,
 			'to' 		=> $to,
 			'text' 		=> $quote,
-			'from' 		=> '30004388511788',
-			'api' 		=> '5'
+			'from' 		=> $setting->phone_number,
+			'api' 		=> intval($setting->api_number)
 		);
-		$smsQueriesClass->sendsms($data);
+		// $smsQueriesClass->sendsms($data);
 		
 		$result['refresh'] = true;
 		echo json_encode($result);

@@ -22,11 +22,15 @@ class Installer
 			$sql = "CREATE TABLE `free_sms_setting` (
 						`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 						`pageid` bigint(20) UNSIGNED NOT NULL,
-						`theme` varchar(50) NOT NULL,
+						`foreground` char(7) NOT NULL,
+						`background` char(7) NOT NULL,
 						`freeSmsCount` smallint(5) UNSIGNED ZEROFILL NOT NULL,
 						`freeSmsTime` int(10) UNSIGNED ZEROFILL DEFAULT NULL COMMENT 'hours of expire',
 						`user_api` varchar(60) NOT NULL,
-						`pass_api` varchar(255) NOT NULL
+						`pass_api` varchar(255) NOT NULL,
+						`phone_number` varchar(20) NOT NULL,
+						`api_number` smallint(5) UNSIGNED ZEROFILL NOT NULL,
+						`signature` varchar(255) NOT NULL
 					) ENGINE=INNODB $charset_collate;
 
 					-- --------------------------------------------------------
@@ -91,7 +95,7 @@ class Installer
 		if(get_page_by_title( $title ) == NULL) {
 			$my_post = array(
 				'post_title'	=> $title,
-				'post_content'	=> '[free_for_all]',
+				'post_content'	=> '[free_for_all text="ارسال پیامک رایگان"]',
 				'post_status'	=> 'publish',
 				'post_author'	=> 1,
 				'post_type'		=> 'page',
@@ -104,18 +108,26 @@ class Installer
 			$wpdb->insert('free_sms_setting', 
 				array(
 					'pageid' 		=> $postId,
-					'theme' 		=> 'default',
+					'foreground' 	=> '#ffffff',
+					'background' 	=> '#e27a4e',
 					'freeSmsCount' 	=> '3',
 					'freeSmsTime' 	=> '24',
 					'user_api' 		=> 'mpi_blog',
-					'pass_api' 		=> 'blog'
+					'pass_api' 		=> 'blog',
+					'phone_number' 	=> '30004388511788',
+					'api_number' 	=> '5',
+					'signature'		=> 'این سرویس کادویی از طرف میزبان پیامک میباشد.'
 				),
 				array(
 					'%d',
 					'%s',
+					'%s',
 					'%d',
 					'%d',
 					'%s',
+					'%s',
+					'%s',
+					'%d',
 					'%s'
 				) 
 			);

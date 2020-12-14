@@ -7,19 +7,12 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance:textfield; /* Firefox */
 }
-.free_for_all_color_default{
-	background-color: #e27a4e;
-	color: #ffffff;
-}
 .free_for_all_color_gray{
-	background-color: #eeeeee;
+	background-color: #ececec;
 	color: #000000;
 }
-.free_for_all_border_default{
-	border: 1px solid #e27a4e;
-}
 .free_for_all_border_gray{
-	border: 1px solid #dddddd;
+	border: 1px solid #aaaaaa;
 }
 .bg-white{
 	background: #ffffff;
@@ -41,6 +34,9 @@ input[type=number] {
 }
 .d-ib{
 	display: inline-block!important;vertical-align: middle;
+}
+span.d-ib{
+	margin: 0 4px;
 }
 .relative{
 	position: relative;
@@ -104,6 +100,18 @@ input[type="text"].free_for_all_input, input[type="email"].free_for_all_input, i
 	text-align: center;
 	border-radius: 6px;
 	padding: 0;
+	text-decoration: blink;
+}
+.free_for_all_color_graybtn{
+	background: #555555!important;
+	color: #ffffff!important;
+	border: solid 1px #dedede;
+}
+.free_for_all_color_graybtn:hover,
+.free_for_all_color_graybtn:active,
+.free_for_all_color_graybtn:focus{
+	text-decoration: blink;
+	background: #333333!important;
 }
 #progress-bar{
 	margin-bottom: 1em;

@@ -34,20 +34,43 @@ function admin_sms_setting(){
 	if (sizeof($_POST) > 0) {
 		$data = array(
 			'pageid' => $_POST['pageid'],
-			'theme' => $_POST['theme'],
+			'background' => $_POST['background'],
+			'foreground' => $_POST['foreground'],
 			'freeSmsCount' => $_POST['freeSmsCount'],
 			'freeSmsTime' => ($_POST['freeSmsTime']=="") ? NULL : $_POST['freeSmsTime'],
 			'user_api' => $_POST['user_api'],
-			'pass_api' => $_POST['pass_api']
+			'pass_api' => $_POST['pass_api'],
+			'phone_number' => $_POST['phone_number'],
+			'api_number' => $_POST['api_number'],
+			'signature' => $_POST['signature']
 		);
 		$smsQueriesClass->update_setting($data);
 	}
 
 	$setting = $smsQueriesClass->setting();
 
+	$args = array(
+		'sort_order' => 'asc',
+		'sort_column' => 'post_title',
+		'hierarchical' => 1,
+		'exclude' => '',
+		'include' => '',
+		'meta_key' => '',
+		'meta_value' => '',
+		'authors' => '',
+		'child_of' => 0,
+		'parent' => -1,
+		'exclude_tree' => '',
+		'number' => '',
+		'offset' => 0,
+		'post_type' => 'page',
+		'post_status' => 'publish'
+	); 
+	$pages = get_pages($args); // get all pages based on supplied args
+
 	include(dirname(__FILE__).'/class.free-sms-page.php');
 	$sms = new Sms_page();
-	$html = $sms->admin_sms_setting($setting);
+	$html = $sms->admin_sms_setting($setting, $pages);
 
 	echo $html;
 }
@@ -107,7 +130,7 @@ add_action('admin_menu', 'sms_plugin_setup_menu');
 */
 function insert_sms_box() {
 	if (!is_page()) {
-		include(dirname(__FILE__).'/class.smsQueries.php');
+		// include(dirname(__FILE__).'/class.smsQueries.php');
 		$smsQueriesClass = new smsQueries();
 		$setting = $smsQueriesClass->setting();
 
@@ -123,16 +146,52 @@ function insert_sms_box() {
 add_action('wp_footer', 'insert_sms_box');
 
 /*
-* create shortcodes
+* create sms suggestion in all pages
 */
-function free_sms_page($atts){
+function php_styles() {
 	include(dirname(__FILE__).'/class.smsQueries.php');
 	$smsQueriesClass = new smsQueries();
 	$setting = $smsQueriesClass->setting();
 	
+	echo '<style>
+	.free_for_all_color_default{
+		background-color: '.$setting->background.'!important;
+		color: '.$setting->foreground.'!important;
+	}
+	.free_for_all_border_default{
+		border: 1px solid '.$setting->background.'!important;
+	}
+	#free_for_all_click_me_text_default:after {
+		border-top: 15px solid '.$setting->background.'!important;
+	}
+	#free_for_all_step_box .free_for_all_input_default:focus,
+	#free_for_all_step_box .free_for_all_input_default:active{
+		border: solid 1px '.$setting->background.'!important;
+	}
+	</style>';
+
+	return;
+}
+
+add_action('wp_head', 'php_styles');
+
+/*
+* create shortcodes
+*/
+function free_sms_page($attr){
+	$attr = shortcode_atts( array(
+		'text' => 'ارسال پیامک رایگان',
+	), $attr );
+
+	// if (!class_exists('smsQueries'))
+	// 	include(dirname(__FILE__).'/class.smsQueries.php');
+	// $smsQueriesClass = new smsQueries();
+	// $setting = $smsQueriesClass->setting();
+	
 	include(dirname(__FILE__).'/class.free-sms-page.php');
 	$sms = new Sms_page();
-	$html = $sms->get_phone($setting);
+	// $html = $sms->get_phone($setting, $attr);
+	$html = $sms->get_phone($attr);
 
 	return $html;
 }

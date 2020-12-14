@@ -25,9 +25,13 @@ class smsQueries
 			), array(
 				'%d',
 				'%s',
+				'%s',
 				'%d',
 				'%d',
 				'%s',
+				'%s',
+				'%s',
+				'%d',
 				'%s'
 			)
 		);

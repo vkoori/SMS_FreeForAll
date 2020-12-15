@@ -18,21 +18,12 @@ class Sms_page
 		</div>';
 	}
 
-	public function get_phone($attr) {
-		return '<button type="">'.$attr["text"].'</button>';
-		// '<div id="progress-bar" class="free_for_all_color_gray relative text-center">0%</div>
-		// <div id="free_for_all_step_box" class="bg-white free_for_all_border_gray free_for_all_radius">
-		// 	<div id="free_for_all_step_title" class="free_for_all_color_gray px-1">شماره موبایل خود را وارد نمایید:</div>
-		// 	<form id="free_for_all_step_form" class="text-center" action="'.admin_url('admin-ajax.php').'" method="POST" accept-charset="utf-8" onsubmit="return nextStep(this);">
-		// 		<div class="free_for_all_row" dir="ltr">
-		// 			<span class="d-ib">09</span><input class="d-ib free_for_all_input free_for_all_input_default" type="number" name="mobile">
-		// 		</div>
-		// 		<div class="free_for_all_row">
-		// 			<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">بعدی</button>
-		// 		</div>
-		// 	</form>
-		// </div>
-		// ';
+	public function get_popup($attr) {
+		return '<p class="text-center">
+					<a class="swipe-overlay-out" href="'.admin_url('admin-ajax.php').'?action=popupForm" title="'.$attr["text"].'" onclick="return popupForm(this);">
+						<span>'.$attr["text"].'</span>
+					</a>
+				</p>';
 	}
 
 	public function admin_sms_setting($setting, $pages) {

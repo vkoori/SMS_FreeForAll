@@ -1,10 +1,38 @@
 function free_for_all_click_me_close(id) {
 	document.getElementById(id).remove();
 }
+
+function smsLoading() {
+	var lightbox = document.createElement("div");
+	lightbox.setAttribute('id', 'sms-lightbox-load');
+	lightbox.setAttribute('class', 'flex flex-center');
+	var loading = document.createElement("p");
+	loading.innerText = 'لطفا منتظر بمانید ...';
+	lightbox.appendChild(loading);
+	document.body.appendChild(lightbox);
+
+}
+
+function popupForm(t){
+	smsLoading();
+	var url = t.getAttribute("href");
+	var method = "GET";
+	var data = "";
+	var callBack = showPopup;
+	myAjax(url, method, data, callBack);
+	return false;
+}
+function showPopup(res) {
+	free_for_all_click_me_close("sms-lightbox-load");
+	document.body.insertAdjacentHTML('beforeend', res);
+	document.getElementById("sms-lightbox").style.opacity = 1;
+}
+
 function nextStep(t) {
+	smsLoading();
 	var url = t.getAttribute("action");
 	var method = t.getAttribute("method");
-	var data = serialize(t)+"&action=myAjaxFunction";
+	var data = serialize(t)+"&action=updateForm";
 
 	myAjax(url, method, data, updateForm);
 	return false;
@@ -53,12 +81,14 @@ function myAjax(url, method, data, callBack) {
 
 var myCountDown;
 function updateForm(res) {
+	if (document.getElementById("sms-lightbox-load"))
+		free_for_all_click_me_close("sms-lightbox-load");
 	if (myCountDown)
 		clearInterval(myCountDown);
 	
 	var res = JSON.parse(res);
 	if (res['error']) {
-		alert(res['error']);
+		document.getElementById("sms-error").innerText = res['error'];
 		return;
 	} else if (res['refresh']) {
 		alert("پیامک ارسال شد");

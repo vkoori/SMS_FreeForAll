@@ -168,6 +168,18 @@ function php_styles() {
 	#free_for_all_step_box .free_for_all_input_default:active{
 		border: solid 1px '.$setting->background.'!important;
 	}
+	.swipe-overlay-out{
+		color: '.$setting->foreground.'!important;
+		background-color: '.$setting->background.'!important;
+		box-shadow: inset 0 0 0 1px '.$setting->foreground.', 0 0 0 0 '.$setting->background.'!important;
+
+	}
+	.swipe-overlay-out::after{
+		background: '.$setting->foreground.'!important;
+	}
+	.swipe-overlay-out:hover{
+		box-shadow: inset 0 0 0 0 '.$setting->foreground.', 3px 3px 4px -1px '.$setting->background.'!important;
+	}
 	</style>';
 
 	return;
@@ -190,8 +202,8 @@ function free_sms_page($attr){
 	
 	include(dirname(__FILE__).'/class.free-sms-page.php');
 	$sms = new Sms_page();
-	// $html = $sms->get_phone($setting, $attr);
-	$html = $sms->get_phone($attr);
+	// $html = $sms->get_popup($setting, $attr);
+	$html = $sms->get_popup($attr);
 
 	return $html;
 }
@@ -212,12 +224,19 @@ add_action( 'init','assets');
 /*
 * define ajax api
 */
-function myAjaxFunction(){  
+function popupForm(){
+	include(dirname(__FILE__).'/popupForm.php');
+	exit();
+}
+add_action( 'wp_ajax_nopriv_popupForm', 'popupForm' );  
+add_action( 'wp_ajax_popupForm', 'popupForm' );
+
+function updateForm() {
 	include(dirname(__FILE__).'/handle-ajax.php');
 	exit();
 }
-add_action( 'wp_ajax_nopriv_myAjaxFunction', 'myAjaxFunction' );  
-add_action( 'wp_ajax_myAjaxFunction', 'myAjaxFunction' );
+add_action( 'wp_ajax_nopriv_updateForm', 'updateForm' );  
+add_action( 'wp_ajax_updateForm', 'updateForm' );
 
 function textsOfSubject() {
 	header('Content-type: application/json');

@@ -15,7 +15,7 @@ input[type=number] {
 	right: 0;
 	bottom: 0;
 	background: rgba(0,0,0,0.4);
-	z-index: 1;
+	z-index: 99;
 }
 #sms-lightbox-load p{
 	direction: rtl;
@@ -134,12 +134,14 @@ a.swipe-overlay-out > span {
 }
 #free_for_all_click_me_default{
 	position: fixed;
+	z-index: 99;
 	bottom: 0.5em;
 	right: 30px;
 }
 #free_for_all_click_me_text_default{
 	font-size: 0.8em;
 	position: fixed;
+	z-index: 99;
 	bottom: calc(0.5em + 70px);
 	right: 0;
 	margin-left: 0.5em;
@@ -211,10 +213,16 @@ input[type="text"].free_for_all_input, input[type="email"].free_for_all_input, i
 #progress-load{
 	position: absolute;
 	height: 100%;
+	width: 0;
 	right: 0;
 	text-align: center;
 	line-height: 1.875em;
 	font-size: 0.8em;
+	-webkit-transition: width 500ms ease;
+	-moz-transition: width 500ms ease;
+	-ms-transition: width 500ms ease;
+	-o-transition: width 500ms ease;
+	transition: width 500ms ease;
 }
 .progress-bar-striped {
 	background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
@@ -222,7 +230,7 @@ input[type="text"].free_for_all_input, input[type="email"].free_for_all_input, i
 }
 .free_for_all_row label {
     display: block;
-    font-size: 1.6rem;
+    font-size: 0.9em;
     font-weight: 400;
     margin: 0 0 0.5rem 0;
 }

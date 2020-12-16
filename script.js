@@ -83,6 +83,9 @@ var myCountDown;
 function updateForm(res) {
 	if (document.getElementById("sms-lightbox-load"))
 		free_for_all_click_me_close("sms-lightbox-load");
+	if (doc.getElementById("precent-label"))
+		free_for_all_click_me_close("precent-label");
+	document.getElementById("sms-error").innerText = '';
 	if (myCountDown)
 		clearInterval(myCountDown);
 	
@@ -95,7 +98,8 @@ function updateForm(res) {
 		window.location.href = window.location.href;
 	}
 
-	document.getElementById("progress-bar").innerHTML = res['progress-bar'];
+	document.getElementById("progress-load").style.width = res['progress-bar'];
+	document.getElementById("progress-load").innerText = res['progress-bar'];
 	document.getElementById("free_for_all_step_title").innerHTML = res['title'];
 	document.getElementById("free_for_all_step_form").innerHTML = res['inner-form'];
 	countDown();

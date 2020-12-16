@@ -57,13 +57,13 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					<input type="hidden" name="public" value="'.$public_key.'">
 					<input class="d-ib free_for_all_input free_for_all_input_default" type="number" name="private" required="required">
 				</div>
-				<div class="free_for_all_row">
+				<div class="free_for_all_row" align="center">
 					<span id="count-down" data-remind="'.$remind.'"></span>
 				</div>
 				<div class="free_for_all_row">
 					<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">بعدی</button>
 				</div>';
-		$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_default" style="width: 25%;">25%</div>';
+		$result["progress-bar"] = '25%';
 
 		echo json_encode($result);
     } elseif (isset($_POST["private"])) {
@@ -104,7 +104,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				<div class="free_for_all_row">
 					<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">بعدی</button>
 				</div>';
-			$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_default" style="width: 50%;">50%</div>';
+			$result["progress-bar"] = '50%';
 		} else {
 			$subjects = $smsQueriesClass->get_subjects();
 
@@ -128,7 +128,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				<div class="free_for_all_row">
 					<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">بعدی</button>
 				</div>';
-			$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_default" style="width: 75%;">75%</div>';
+			$result["progress-bar"] = '75%';
 		}
 		
 		echo json_encode($result);
@@ -170,7 +170,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			<div class="free_for_all_row">
 				<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">بعدی</button>
 			</div>';
-		$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_default" style="width: 75%;">75%</div>';
+		$result["progress-bar"] = '75%';
 
 		echo json_encode($result);
 	} elseif(isset($_POST["text"])) {
@@ -199,7 +199,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			<div class="free_for_all_row">
 				<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">ارسال</button>
 			</div>';
-		$result["progress-bar"] = '<div id="progress-load" class="progress-bar-striped free_for_all_color_default" style="width: 100%;">99%</div>';
+		$result["progress-bar"] = '99%';
 
 
 		echo json_encode($result);

@@ -32,17 +32,30 @@ function admin_sms_setting(){
 	$smsQueriesClass = new smsQueries();
 
 	if (sizeof($_POST) > 0) {
+
+		if ($_POST['freeSmsTimeCycle']=="")
+			$freeSmsTime = NULL;
+		else
+			$freeSmsTime = $_POST['freeSmsTimeCycle'].'|'.$_POST['freeSmsTime'];
+
 		$data = array(
 			'pageid' => $_POST['pageid'],
 			'background' => $_POST['background'],
 			'foreground' => $_POST['foreground'],
 			'freeSmsCount' => $_POST['freeSmsCount'],
-			'freeSmsTime' => ($_POST['freeSmsTime']=="") ? NULL : $_POST['freeSmsTime'],
+			'freeSmsTime' => $freeSmsTime,
 			'user_api' => $_POST['user_api'],
 			'pass_api' => $_POST['pass_api'],
 			'phone_number' => $_POST['phone_number'],
 			'api_number' => $_POST['api_number'],
-			'signature' => $_POST['signature']
+			'other_texts' => serialize(
+				array(
+					'signature' => $_POST['signature'],
+					'profile' => (isset($_POST["profile"])) ? $_POST["profile"] : array(),
+					'gift_text' => $_POST['gift_text'],
+					
+				)
+			)
 		);
 		$smsQueriesClass->update_setting($data);
 	}

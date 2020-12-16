@@ -25,12 +25,12 @@ class Installer
 						`foreground` char(7) NOT NULL,
 						`background` char(7) NOT NULL,
 						`freeSmsCount` smallint(5) UNSIGNED ZEROFILL NOT NULL,
-						`freeSmsTime` int(10) UNSIGNED ZEROFILL DEFAULT NULL COMMENT 'hours of expire',
+						`freeSmsTime` char(8) DEFAULT NULL COMMENT '(factor | hours) of expire',
 						`user_api` varchar(60) NOT NULL,
 						`pass_api` varchar(255) NOT NULL,
 						`phone_number` varchar(20) NOT NULL,
 						`api_number` smallint(5) UNSIGNED ZEROFILL NOT NULL,
-						`signature` varchar(255) NOT NULL
+						`other_texts` text NOT NULL
 					) ENGINE=INNODB $charset_collate;
 
 					-- --------------------------------------------------------
@@ -53,9 +53,9 @@ class Installer
 					-- --------------------------------------------------------
 					CREATE TABLE `free_sms_profile` (
 						`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-						`first_name` varchar(100) NOT NULL,
-						`last_name` varchar(100) NOT NULL,
-						`sex` tinyint(1) NOT NULL COMMENT 'man=1, woman=0',
+						`first_name` varchar(100) DEFAULT NULL,
+						`last_name` varchar(100) DEFAULT NULL,
+						`sex` tinyint(1) DEFAULT NULL COMMENT 'man=1, woman=0',
 						`userid` bigint(20) UNSIGNED NOT NULL,
 						FOREIGN KEY (`userid`) REFERENCES `free_sms_user` (`id`) ON DELETE CASCADE
 					) ENGINE=INNODB $charset_collate;
@@ -111,19 +111,25 @@ class Installer
 					'foreground' 	=> '#ffffff',
 					'background' 	=> '#e27a4e',
 					'freeSmsCount' 	=> '3',
-					'freeSmsTime' 	=> '24',
+					'freeSmsTime' 	=> '1|24',
 					'user_api' 		=> 'mpi_blog',
 					'pass_api' 		=> 'blog',
 					'phone_number' 	=> '30004388511788',
 					'api_number' 	=> '5',
-					'signature'		=> 'این سرویس کادویی از طرف میزبان پیامک میباشد.'
+					'other_texts'	=> serialize(
+						array(
+							"signature" => "این سرویس کادویی از طرف میزبان پیامک میباشد.",
+							"profile" => array(),
+							"gift_text" => "میزبان پیامک مفتخر است که به هر شماره 3 پیامک رایگان در هر 24 ساعت ارائه دهد. کد استفاده از سرویس : "
+						)
+					)
 				),
 				array(
 					'%d',
 					'%s',
 					'%s',
 					'%d',
-					'%d',
+					'%s',
 					'%s',
 					'%s',
 					'%s',

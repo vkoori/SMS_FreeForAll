@@ -83,7 +83,7 @@ var myCountDown;
 function updateForm(res) {
 	if (document.getElementById("sms-lightbox-load"))
 		free_for_all_click_me_close("sms-lightbox-load");
-	if (doc.getElementById("precent-label"))
+	if (document.getElementById("precent-label"))
 		free_for_all_click_me_close("precent-label");
 	document.getElementById("sms-error").innerText = '';
 	if (myCountDown)
@@ -96,6 +96,7 @@ function updateForm(res) {
 	} else if (res['refresh']) {
 		alert("پیامک ارسال شد");
 		window.location.href = window.location.href;
+		return;
 	}
 
 	document.getElementById("progress-load").style.width = res['progress-bar'];

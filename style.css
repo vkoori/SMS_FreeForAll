@@ -169,12 +169,24 @@ a.swipe-overlay-out > span {
 	right: 6px;
 	top: 6px;
 }
+#free_for_all_click_me_close_lightbox{
+	position: absolute;
+	width: 2em;
+	height: 2em;
+	cursor: pointer;
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDEyMy4wNSAxMjMuMDUiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiIGNsYXNzPSIiPjxnPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoJPHBhdGggZD0iTTEyMS4zMjUsMTAuOTI1bC04LjUtOC4zOTljLTIuMy0yLjMtNi4xLTIuMy04LjUsMGwtNDIuNCw0Mi4zOTlMMTguNzI2LDEuNzI2Yy0yLjMwMS0yLjMwMS02LjEwMS0yLjMwMS04LjUsMGwtOC41LDguNSAgIGMtMi4zMDEsMi4zLTIuMzAxLDYuMSwwLDguNWw0My4xLDQzLjFsLTQyLjMsNDIuNWMtMi4zLDIuMy0yLjMsNi4xLDAsOC41bDguNSw4LjVjMi4zLDIuMyw2LjEsMi4zLDguNSwwbDQyLjM5OS00Mi40bDQyLjQsNDIuNCAgIGMyLjMsMi4zLDYuMSwyLjMsOC41LDBsOC41LTguNWMyLjMtMi4zLDIuMy02LjEsMC04LjVsLTQyLjUtNDIuNGw0Mi40LTQyLjM5OUMxMjMuNjI1LDE3LjEyNSwxMjMuNjI1LDEzLjMyNSwxMjEuMzI1LDEwLjkyNXoiIGZpbGw9IiNmZmZmZmYiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiIGNsYXNzPSIiPjwvcGF0aD4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8L2c+PC9zdmc+);
+	background-size: cover;
+	right: 0;
+	bottom: calc(100% + 1em);
+	z-index: 1;
+}
+
 input[type="text"].free_for_all_input, input[type="email"].free_for_all_input, input[type="url"].free_for_all_input, input[type="password"].free_for_all_input, input[type="search"].free_for_all_input, input[type="number"].free_for_all_input, input[type="tel"].free_for_all_input, input[type="range"].free_for_all_input, input[type="date"].free_for_all_input, input[type="month"].free_for_all_input, input[type="week"].free_for_all_input, input[type="time"].free_for_all_input, input[type="datetime"].free_for_all_input, input[type="datetime-local"].free_for_all_input, input[type="color"].free_for_all_input, select.free_for_all_input{
 	/*height: 2em;*/
 	border: solid 1px #aaaaaa;
 	outline: none;
 	border-radius: 6px;
-	max-width: 100%;
+	width: 100%;
 	padding: 2px 0.5em;
 }
 #free_for_all_step_box .free_for_all_input_default:focus,

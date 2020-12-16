@@ -3,7 +3,10 @@
 <?php else: ?>
 	<?php wp_head(); ?>
 <?php endif; ?>
-	<div id="sms-form" class="free_for_all_radius">
+	<div id="sms-form" class="free_for_all_radius relative">
+		<?php if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ) : ?>
+			<div id="free_for_all_click_me_close_lightbox" onclick="free_for_all_click_me_close('sms-lightbox');"></div>
+		<?php endif; ?>
 		<div id="progress-bar" class="free_for_all_color_gray relative text-center free_for_all_border_gray">
 			<span id="precent-label">0%</span>
 			<div id="progress-load" class="progress-bar-striped free_for_all_color_default"></div>

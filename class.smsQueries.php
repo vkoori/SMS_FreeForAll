@@ -27,7 +27,7 @@ class smsQueries
 				'%s',
 				'%s',
 				'%d',
-				'%d',
+				'%s',
 				'%s',
 				'%s',
 				'%s',
@@ -162,6 +162,21 @@ class smsQueries
 	/**
 	 * 
 	 */
+	public function updateProfile($data) {
+		global $wpdb;
+		$profile = $wpdb->update('free_sms_profile', 
+					$data , 
+					array(
+						'userid' => $_POST['userid']
+					)
+				);
+
+		return $profile;
+	}
+
+	/**
+	 * 
+	 */
 	public function get_subjects() {
 		global $wpdb;
 		$subjects = $wpdb->get_results("SELECT * FROM `free_sms_subject`");
@@ -240,12 +255,33 @@ class smsQueries
 	/**
 	 * 
 	 */
+	public function count_of_use_sms_mobile($mobile) {
+		global $wpdb;
+		$smsCount = $wpdb->get_results("SELECT COUNT(`id`) AS `count` FROM `free_sms_sms` WHERE `userid`=(SELECT `id` FROM `free_sms_user` WHERE `mobile`={$mobile})");
+
+		return $smsCount[0];
+	}
+
+	/**
+	 * 
+	 */
 	public function count_of_use_sms2($userid, $date) {
 		global $wpdb;
 		$smsCount = $wpdb->get_results("SELECT COUNT(`id`) AS `count` FROM `free_sms_sms` WHERE `userid`={$userid} AND `create_at`>'{$date}'");
 
 		return $smsCount[0];
 	}
+
+	/**
+	 * 
+	 */
+	public function count_of_use_sms_mobile2($mobile, $date) {
+		global $wpdb;
+		$smsCount = $wpdb->get_results("SELECT COUNT(`id`) AS `count` FROM `free_sms_sms` WHERE `userid`=(SELECT `id` FROM `free_sms_user` WHERE `mobile`={$mobile}) AND `create_at`>'{$date}'");
+
+		return $smsCount[0];
+	}
+
 
 	/**
 	 * 

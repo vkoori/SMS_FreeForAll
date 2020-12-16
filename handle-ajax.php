@@ -1,4 +1,31 @@
 <?php 
+function check_sms_count($smsQueriesClass, $setting, $public) {
+	$result = array();
+	$user = $smsQueriesClass->getUser('public_key', $public);
+	if ($user->key_generate_date != "2001-01-01 12:00:00") {
+		$result['error'] = 'احراز هویت صورت نپذیرفت.';
+		echo json_encode($result);
+		exit();
+	}
+
+	$userid = $user->id;
+	if (is_null($setting->freeSmsTime)) {
+		$smsCount = $smsQueriesClass->count_of_use_sms($userid);
+	} else {
+		$reset_time = explode("|", $setting->freeSmsTime);
+		$reset_time = $reset_time[0]*$reset_time[1];
+		date_default_timezone_set('Asia/Tehran');
+		$date = date('Y-m-d H:i:s', strtotime('-'.$reset_time.' hours'));
+		$smsCount = $smsQueriesClass->count_of_use_sms2($userid, $date);
+	}
+
+	if ($smsCount->count >= $setting->freeSmsCount) {
+		$result['error'] = 'تعداد پیامک رایگان شما به پایان رسیده است.';
+		echo json_encode($result);
+		exit();
+	}
+}
+
 if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ) {
 	header('Content-type: application/json');
 	$result = array();
@@ -13,6 +40,21 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		$regex = preg_match($pattern, $mobile);
 		if (!$regex) {
 			$result['error'] = 'شماره موبایل نا معتبر است.';
+			echo json_encode($result);
+			exit();
+		}
+
+		if (is_null($setting->freeSmsTime)) {
+			$smsCount = $smsQueriesClass->count_of_use_sms_mobile($mobile);
+		} else {
+			$reset_time = explode("|", $setting->freeSmsTime);
+			$reset_time = $reset_time[0]*$reset_time[1];
+			date_default_timezone_set('Asia/Tehran');
+			$date = date('Y-m-d H:i:s', strtotime('-'.$reset_time.' hours'));
+			$smsCount = $smsQueriesClass->count_of_use_sms_mobile2($mobile, $date);
+		}
+		if ($smsCount->count >= $setting->freeSmsCount) {
+			$result['error'] = 'تعداد پیامک رایگان شما به پایان رسیده است.';
 			echo json_encode($result);
 			exit();
 		}
@@ -39,12 +81,12 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				'username' 	=> $setting->user_api,
 				'password' 	=> $setting->pass_api,
 				'to' 		=> $user['mobile'],
-				'text' 		=> $user['private_key'],
-				'from' 		=> '30004388511788',
-				'api' 		=> '5'
+				'text' 		=> unserialize($setting->other_texts)["gift_text"].$user['private_key'],
+				'from' 		=> $setting->phone_number,
+				'api' 		=> intval($setting->api_number)
 			);
 
-			// $sms = $smsQueriesClass->sendsms($data);
+			$sms = $smsQueriesClass->sendsms($data);
 			// $result['sms'] = $sms;
 		}
 
@@ -61,9 +103,9 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					<span id="count-down" data-remind="'.$remind.'"></span>
 				</div>
 				<div class="free_for_all_row">
-					<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">بعدی</button>
+					<button type="submit" class="swipe-overlay-out"><span>بعدی</span></button>
 				</div>';
-		$result["progress-bar"] = '25%';
+		$result["progress-bar"] = '33%';
 
 		echo json_encode($result);
     } elseif (isset($_POST["private"])) {
@@ -79,81 +121,44 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		}
 
 		$expire = $smsQueriesClass->expireUser($user->mobile);
-		$profile = $smsQueriesClass->getProfile($user->id);
+		check_sms_count($smsQueriesClass, $setting, $public);
 
-		if (sizeof($profile) == 0) {
-			$result["title"] = 'اطلاعات خود را وارد کنید:';
-			$result["inner-form"] = '
-				<div class="free_for_all_row">
-					<label for="fname">نام</label>
-					<input class="d-ib free_for_all_input free_for_all_input_default" type="text" name="fname" id="fname" required="required">
-					<input type="hidden" name="userid" value="'.$user->id.'">
-					<input type="hidden" name="public" value="'.$user->public_key.'">
-				</div>
-				<div class="free_for_all_row">
-					<label for="lname">نام خانوادگی</label>
-					<input class="d-ib free_for_all_input free_for_all_input_default" type="text" name="lname" id="lname" required="required">
-				</div>
-				<div class="free_for_all_row">
-					<label for="sex">جنسیت</label>
-					<select class="d-ib free_for_all_input free_for_all_input_default" name="sex" id="sex">
-						<option value="1">مرد</option>
-						<option value="0">زن</option>
-					</select>
-				</div>
-				<div class="free_for_all_row">
-					<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">بعدی</button>
-				</div>';
-			$result["progress-bar"] = '50%';
-		} else {
-			$subjects = $smsQueriesClass->get_subjects();
-
-			$result["title"] = 'متن پیام را انتخاب کنید:';
-			$result["inner-form"] = '
-				<div class="free_for_all_row">
-					<input type="hidden" name="public" value="'.$user->public_key.'">
-					<label for="subject">موضوع</label>
-					<select class="d-ib free_for_all_input free_for_all_input_default" name="subject" id="subject" onchange="getTexts(this.value);" required="required">
-						<option value="">انتخاب کنید</option>';
-						foreach ($subjects as $s) {
-							$result["inner-form"] .= '<option value="'.$s->id.'">'.$s->subject.'</option>';
-						}
-					$result["inner-form"] .= '</select>
-				</div>
-				<div class="free_for_all_row">
-					<label for="text">متن پیامک</label>
-					<select class="d-ib free_for_all_input free_for_all_input_default" name="text" id="text" onchange="setVars(this.value);" required="required">
-					</select>
-				</div>
-				<div class="free_for_all_row">
-					<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">بعدی</button>
-				</div>';
-			$result["progress-bar"] = '75%';
-		}
+		$result["inner-form"] = '<input type="hidden" name="public" value="'.$user->public_key.'">';
 		
-		echo json_encode($result);
-	} elseif (isset($_POST["fname"])) {
-		$user = $smsQueriesClass->getUser('public_key', $_POST["public"]);
-		if ($user->key_generate_date != "2001-01-01 12:00:00") {
-			$result['error'] = 'احراز هویت صورت نپذیرفت.';
-			echo json_encode($result);
-			exit();
-		}
+		$profile_setting = unserialize($setting->other_texts)["profile"];
+		if (sizeof($profile_setting) > 0) {
+			$result["inner-form"] .= '<input type="hidden" name="userid" value="'.$user->id.'">';
 
-		$data = array(
-			'first_name' 	=> $_POST['fname'],
-			'last_name' 	=> $_POST['lname'],
-			'sex' 			=> $_POST['sex'],
-			'userid' 		=> $_POST['userid']
-		);
-		$profile = $smsQueriesClass->setProfile($data);
+			$profile = $smsQueriesClass->getProfile($user->id);
+			if (in_array('fname', $profile_setting) AND (is_null($profile[0]->first_name) OR sizeof($profile)==0)) {
+				$result["inner-form"] .= '
+					<div class="free_for_all_row">
+						<label for="fname">نام</label>
+						<input class="d-ib free_for_all_input free_for_all_input_default" type="text" name="fname" id="fname" required="required">
+					</div>';
+			}
+			if (in_array('lname', $profile_setting) AND (is_null($profile[0]->last_name) OR sizeof($profile)==0)) {
+				$result["inner-form"] .= '
+					<div class="free_for_all_row">
+						<label for="lname">نام خانوادگی</label>
+						<input class="d-ib free_for_all_input free_for_all_input_default" type="text" name="lname" id="lname" required="required">
+					</div>';
+			}
+			if (in_array('sex', $profile_setting) AND (is_null($profile[0]->sex) OR sizeof($profile)==0)) {
+				$result["inner-form"] .= '
+					<div class="free_for_all_row">
+						<label for="sex">جنسیت</label>
+						<select class="d-ib free_for_all_input free_for_all_input_default" name="sex" id="sex">
+							<option value="1">مرد</option>
+							<option value="0">زن</option>
+						</select>
+					</div>';
+			}
+		}
 
 		$subjects = $smsQueriesClass->get_subjects();
-
-		$result["title"] = 'متن پیام را انتخاب کنید:';
-		$result["inner-form"] = '
+		$result["inner-form"] .= '
 			<div class="free_for_all_row">
-				<input type="hidden" name="public" value="'.$_POST["public"].'">
 				<label for="subject">موضوع</label>
 				<select class="d-ib free_for_all_input free_for_all_input_default" name="subject" id="subject" onchange="getTexts(this.value);" required="required">
 					<option value="">انتخاب کنید</option>';
@@ -168,12 +173,39 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				</select>
 			</div>
 			<div class="free_for_all_row">
-				<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">بعدی</button>
+				<button type="submit" class="swipe-overlay-out"><span>بعدی</span></button>
 			</div>';
-		$result["progress-bar"] = '75%';
 
+		$result["title"] = 'فرم زیر را تکمیل کنید:';
+		$result["progress-bar"] = '66%';
+		
 		echo json_encode($result);
-	} elseif(isset($_POST["text"])) {
+	} elseif (isset($_POST["text"])) {
+		$public = $_POST["public"];
+		check_sms_count($smsQueriesClass, $setting, $public);
+
+		if (isset($_POST["fname"]) OR isset($_POST["lname"]) OR isset($_POST["sex"])) {
+			$profile = $smsQueriesClass->getProfile($_POST['userid']);
+			
+			$data = array(
+				'userid' => $_POST['userid']
+			);
+			if (isset($_POST["fname"])) {
+				$data['first_name'] = $_POST['fname'];
+			}
+			if (isset($_POST["lname"])) {
+				$data['last_name'] = $_POST['lname'];
+			}
+			if (isset($_POST["sex"])) {
+				$data['sex'] = $_POST['sex'];
+			}
+			$profile = $smsQueriesClass->getProfile($_POST['userid']);
+			if (sizeof($profile) == 0)
+				$profile = $smsQueriesClass->setProfile($data);
+			else
+				$profile = $smsQueriesClass->updateProfile($data, $_POST['userid']);
+		}
+
 		$id = $_POST["text"];
 		$text = $smsQueriesClass->texts_with_id($id);
 		$result["title"] = 'متن پیام را تکمیل کن:';
@@ -197,44 +229,31 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			}
 			$result["inner-form"] .= '
 			<div class="free_for_all_row">
-				<button type="submit" class="free_for_all_btn free_for_all_color_graybtn">ارسال</button>
+				<button type="submit" class="swipe-overlay-out"><span>ارسال</span></button>
 			</div>';
 		$result["progress-bar"] = '99%';
 
 
 		echo json_encode($result);
-		// if (publicKey == publicKey AND date == 2001) then send message
+		
 	} elseif(isset($_POST["to"])) {
-		$user = $smsQueriesClass->getUser('public_key', $_POST["public"]);
-		if ($user->key_generate_date != "2001-01-01 12:00:00") {
-			$result['error'] = 'احراز هویت صورت نپذیرفت.';
-			echo json_encode($result);
-			exit();
-		}
+		$public = $_POST["public"];
+		check_sms_count($smsQueriesClass, $setting, $public);
 
-		$userid = $user->id;
-		if (is_null($setting->freeSmsTime)) {
-			$smsCount = $smsQueriesClass->count_of_use_sms($userid);
-		} else {
-			date_default_timezone_set('Asia/Tehran');
-			$date = date('Y-m-d H:i:s', strtotime('-'.intval($setting->freeSmsTime).' hours'));
-			$smsCount = $smsQueriesClass->count_of_use_sms2($userid, $date);
-		}
-
-		if ($smsCount->count >= $setting->freeSmsCount) {
-			$result['error'] = 'تعداد پیامک رایگان شما به پایان رسیده است.';
-			echo json_encode($result);
-			exit();
-		}
-
+		$user = $smsQueriesClass->getUser('public_key', $public);
 		$to = $_POST["to"];
-		$vars = $_POST["variables"];
 		$quoteid = $_POST["quoteid"];
 		$text = $smsQueriesClass->texts_with_id($quoteid);
-		$quote = vsprintf($text[0]->message, $vars);
+		if (isset($_POST["variables"])) {
+			$vars = $_POST["variables"];
+			$quote = vsprintf($text[0]->message, $vars);
+		} else {
+			$quote = $text[0]->message;
+		}
+		$quote .= "\n\n".unserialize($setting->other_texts)["signature"];
 
 		$data = array(
-			"userid" => $userid,
+			"userid" => $user->id,
 			"quote" => $quote,
 			"to" => $to
 		);
@@ -248,7 +267,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			'from' 		=> $setting->phone_number,
 			'api' 		=> intval($setting->api_number)
 		);
-		// $smsQueriesClass->sendsms($data);
+		$smsQueriesClass->sendsms($data);
 		
 		$result['refresh'] = true;
 		echo json_encode($result);

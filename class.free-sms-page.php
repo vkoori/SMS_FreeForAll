@@ -27,6 +27,11 @@ class Sms_page
 	}
 
 	public function admin_sms_setting($setting, $pages) {
+		if (is_null($setting->freeSmsTime))
+			$reset_time = array('','');
+		else
+			$reset_time = explode("|", $setting->freeSmsTime);
+
 		$form = '
 		<div class="wrap">
 			<h1 class="wp-heading-inline">تنظیمات افزونه</h1>
@@ -59,8 +64,72 @@ class Sms_page
 							<td><input name="freeSmsCount" type="number" id="freeSmsCount" value="'.intval($setting->freeSmsCount).'" class="regular-text"></td>
 						</tr>
 						<tr>
-							<th scope="row"><label for="freeSmsTime">هر چند ساعت ریست شدن</label></th>
-							<td><input name="freeSmsTime" type="number" id="freeSmsTime" value="'.intval($setting->freeSmsTime).'" class="regular-text"></td>
+							<th scope="row"><label for="freeSmsTime">بازگردانی پیامک هدیه </label></th>
+							<td>
+								<div>
+									<select name="freeSmsTimeCycle" class="regular-text">';
+										switch ($reset_time[0]) {
+											case '1':
+												$form .= '
+												<option value="">هرگز</option>
+												<option value="1" selected="selected">ساعتی</option>
+												<option value="24">روزانه</option>
+												<option value="168">هفتگی</option>
+												<option value="720">ماهیانه</option>
+												<option value="8760">سالیانه</option>';
+												break;
+											case '24':
+												$form .= '
+												<option value="">هرگز</option>
+												<option value="1">ساعتی</option>
+												<option value="24" selected="selected">روزانه</option>
+												<option value="168">هفتگی</option>
+												<option value="720">ماهیانه</option>
+												<option value="8760">سالیانه</option>';
+												break;
+											case '168':
+												$form .= '
+												<option value="">هرگز</option>
+												<option value="1">ساعتی</option>
+												<option value="24">روزانه</option>
+												<option value="168" selected="selected">هفتگی</option>
+												<option value="720">ماهیانه</option>
+												<option value="8760">سالیانه</option>';
+												break;
+											case '720':
+												$form .= '
+												<option value="">هرگز</option>
+												<option value="1">ساعتی</option>
+												<option value="24">روزانه</option>
+												<option value="168">هفتگی</option>
+												<option value="720" selected="selected">ماهیانه</option>
+												<option value="8760">سالیانه</option>';
+												break;
+											case '8760':
+												$form .= '
+												<option value="">هرگز</option>
+												<option value="1">ساعتی</option>
+												<option value="24">روزانه</option>
+												<option value="168">هفتگی</option>
+												<option value="720">ماهیانه</option>
+												<option value="8760" selected="selected">سالیانه</option>';
+												break;
+											default:
+												$form .= '
+												<option value="" selected="selected">هرگز</option>
+												<option value="1">ساعتی</option>
+												<option value="24">روزانه</option>
+												<option value="168">هفتگی</option>
+												<option value="720">ماهیانه</option>
+												<option value="8760">سالیانه</option>';
+												break;
+										}
+									$form .= '</select>
+								</div>
+								<div style="margin-top:0.5em">
+									<input name="freeSmsTime" type="number" max="999" id="freeSmsTime" value="'.$reset_time[1].'" class="regular-text">
+								</div>
+							</td>
 						</tr>
 						<tr>
 							<th scope="row"><label for="user_api">یوزرنیم پنل پیامک</label></th>
@@ -79,8 +148,38 @@ class Sms_page
 							<td><input name="api_number" type="text" id="api_number" value="'.intval($setting->api_number).'" class="regular-text"></td>
 						</tr>
 						<tr>
+							<th scope="row"><label>اطلاعات مشتری</label></th>
+							<td>
+								<span dir="rtl">
+									<label for="fname">نام</label>';
+									if (in_array('fname', unserialize($setting->other_texts)["profile"]))
+										$form .= '<input checked="checked" name="profile[]" id="fname" type="checkbox" value="fname">';
+									else
+										$form .= '<input name="profile[]" id="fname" type="checkbox" value="fname">';
+								$form .= '</span>
+								<span dir="rtl">
+									<label for="lname">نام خانوادگی</label>';
+									if (in_array('lname', unserialize($setting->other_texts)["profile"]))
+										$form .= '<input checked="checked" name="profile[]" id="lname" type="checkbox" value="lname">';
+									else
+										$form .= '<input name="profile[]" id="lname" type="checkbox" value="lname">';
+								$form .= '</span>
+								<span dir="rtl">
+									<label for="sex">جنسیت</label>';
+									if (in_array('sex', unserialize($setting->other_texts)["profile"]))
+										$form .= '<input checked="checked" name="profile[]" id="sex" type="checkbox" value="sex">';
+									else
+										$form .= '<input name="profile[]" id="sex" type="checkbox" value="sex">';
+								$form .= '</span>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="gift_text">متن هدیه</label></th>
+							<td><input name="gift_text" type="text" id="gift_text" value="'.unserialize($setting->other_texts)["gift_text"].'" class="regular-text"></td>
+						</tr>
+						<tr>
 							<th scope="row"><label for="signature">امضا پیامک</label></th>
-							<td><input name="signature" type="text" id="signature" value="'.$setting->signature.'" class="regular-text"></td>
+							<td><input name="signature" type="text" id="signature" value="'.unserialize($setting->other_texts)["signature"].'" class="regular-text"></td>
 						</tr>
 					</tbody>
 				</table>

@@ -1,5 +1,5 @@
 <?php if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ) : ?>
-	<div id="sms-lightbox" class="flex flex-center">
+	<div id="sms-lightbox" class="flex flex-center" onclick="free_sms_closelightbox(event);">
 <?php else: ?>
 	<?php wp_head(); ?>
 <?php endif; ?>

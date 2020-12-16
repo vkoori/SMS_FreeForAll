@@ -298,4 +298,19 @@ class smsQueries
 
 		return $sms;
 	}
+
+	/**
+	 * 
+	 */
+	public function report_sms() {
+		global $wpdb;
+		$messages = $wpdb->get_results("SELECT `quote`, `to`, `send_time`, `mobile`, `first_name`, `last_name`, `sex`
+									FROM `free_sms_sms` 
+									INNER JOIN `free_sms_user`
+									ON `free_sms_user`.`id`=`free_sms_sms`.`userid`
+									LEFT JOIN `free_sms_profile`
+									ON `free_sms_profile`.`userid`=`free_sms_sms`.`userid`");
+
+		return $messages;
+	}
 }

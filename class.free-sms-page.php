@@ -233,4 +233,30 @@ class Sms_page
 
 		return $html;
 	}
+
+	public function admin_sms_report($messages) {
+		$html = '<table class="wp-list-table widefat fixed striped">
+					<thead>
+						<tr>
+							<th><strong>from</strong></th>
+							<th><strong>name</strong></th>
+							<th><strong>to</strong></th>
+							<th><strong>messages</strong></th>
+							<th><strong>time</strong></th>
+						</tr>
+					</thead>
+					<tbody>';
+					foreach ($messages as $m) {
+						$html .= '<tr>
+							<td>'.$m->mobile.'</td>
+							<td>'.$m->first_name.' '.$m->last_name.'</td>
+							<td>'.$m->to.'</td>
+							<td>'.$m->quote.'</td>
+							<td>'.$m->send_time.'</td>
+						</tr>';
+					}
+					$html .= '</tbody>
+				</table>';
+		return $html;
+	}
 }

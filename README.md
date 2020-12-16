@@ -1,2 +1,2 @@
-list of sms
-inset manual sms
+insert manual sms text
+customize messages for each steps

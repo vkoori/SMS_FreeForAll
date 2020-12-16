@@ -169,7 +169,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			</div>
 			<div class="free_for_all_row">
 				<label for="text">متن پیامک</label>
-				<select class="d-ib free_for_all_input free_for_all_input_default" name="text" id="text" onchange="setVars(this.value);" required="required">
+				<select class="d-ib free_for_all_input free_for_all_input_default" name="text" id="text" required="required">
 				</select>
 			</div>
 			<div class="free_for_all_row">
@@ -178,6 +178,12 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 		$result["title"] = 'فرم زیر را تکمیل کنید:';
 		$result["progress-bar"] = '66%';
+		$result["script"] = '
+			  var el1 = document.querySelector("#subject");
+			  new Choices(el1);
+			  var el2 = document.querySelector("#text");
+			  choices2 = new Choices(el2);
+		';
 		
 		echo json_encode($result);
 	} elseif (isset($_POST["text"])) {

@@ -25,6 +25,7 @@ function sms_plugin_setup_menu(){
 	add_menu_page('پیامک رایگان', 'پیامک رایگان', 'manage_options', 'free-sms-setting', 'admin_sms_setting', 'dashicons-welcome-write-blog');
 	add_submenu_page( 'free-sms-setting', 'تنظیمات', 'تنظیمات', 'manage_options', 'free-sms-setting', 'admin_sms_setting');
 	add_submenu_page( 'free-sms-setting', 'متن پیامک', 'متن پیامک', 'manage_options', 'free-sms-text', 'admin_sms_text');
+	add_submenu_page( 'free-sms-setting', 'گزارش ارسال', 'گزارش ارسال', 'manage_options', 'free-sms-report', 'admin_sms_report');
 }
  
 function admin_sms_setting(){
@@ -136,6 +137,17 @@ function admin_sms_text () {
 
 }
 
+function admin_sms_report() {
+	include(dirname(__FILE__).'/class.smsQueries.php');
+	$smsQueriesClass = new smsQueries();
+	$messages = $smsQueriesClass->report_sms();
+
+	include(dirname(__FILE__).'/class.free-sms-page.php');
+	$sms = new Sms_page();
+	$html = $sms->admin_sms_report($messages);
+	echo $html;
+}
+
 add_action('admin_menu', 'sms_plugin_setup_menu');
 
 /*
@@ -228,9 +240,20 @@ add_shortcode('free_for_all', 'free_sms_page');
 function assets() {
 	wp_register_style('sms_style', plugins_url('style.css',__FILE__ ));
 	wp_enqueue_style('sms_style');
+
+	// wp_register_style('select_style', "https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/base.min.css");
+	// wp_enqueue_style('select_style');
+
+	wp_register_style('select_style2', "https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css");
+	wp_enqueue_style('select_style2');
+	
 	// wp_enqueue_script('jquery');
+	
 	wp_register_script( 'sms_script', plugins_url('script.js',__FILE__ ));
 	wp_enqueue_script('sms_script');
+	
+	wp_register_script( 'select_script', "https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js");
+	wp_enqueue_script('select_script');
 }
 add_action( 'init','assets');
 

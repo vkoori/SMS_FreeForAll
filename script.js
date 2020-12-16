@@ -13,6 +13,11 @@ function smsLoading() {
 
 }
 
+function free_sms_closelightbox(e) {
+	if(!document.getElementById('sms-form').contains(e.target))
+		free_for_all_click_me_close('sms-lightbox');
+}
+
 function popupForm(t){
 	smsLoading();
 	var url = t.getAttribute("href");
@@ -80,6 +85,7 @@ function myAjax(url, method, data, callBack) {
 }
 
 var myCountDown;
+var choices2;
 function updateForm(res) {
 	if (document.getElementById("sms-lightbox-load"))
 		free_for_all_click_me_close("sms-lightbox-load");
@@ -95,7 +101,8 @@ function updateForm(res) {
 		return;
 	} else if (res['refresh']) {
 		alert("پیامک ارسال شد");
-		window.location.href = window.location.href;
+		free_for_all_click_me_close("sms-lightbox");
+		// window.location.href = window.location.href;
 		return;
 	}
 
@@ -103,6 +110,8 @@ function updateForm(res) {
 	document.getElementById("progress-load").innerText = res['progress-bar'];
 	document.getElementById("free_for_all_step_title").innerHTML = res['title'];
 	document.getElementById("free_for_all_step_form").innerHTML = res['inner-form'];
+	if (res['script'])
+		eval(res['script']);
 	countDown();
 }
 
@@ -134,8 +143,14 @@ function updateTexts(res) {
 	var res = JSON.parse(res)["texts"];
 	var select = document.getElementById("text");
 	var options = '';
+	var data = [];
 	for (var i = 0; i < res.length; i++) {
 		options += '<option value="'+res[i]["id"]+'">'+res[i]["message"].replaceAll("%s", "-------")+'</option>';
+
 	}
+	choices2.destroy();
 	select.innerHTML = options;
+
+	var el2 = document.querySelector("#text");
+	choices2 = new Choices(el2);
 }

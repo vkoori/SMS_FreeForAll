@@ -10,10 +10,6 @@ input[type=number] {
 #sms-lightbox-load,
 #sms-lightbox{
 	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
 	background: rgba(0,0,0,0.4);
 	z-index: 99;
 }
@@ -22,6 +18,7 @@ input[type=number] {
 }
 #sms-lightbox #sms-form{
 	max-width: 500px;
+	min-width: 250px;
 }
 #sms-form{
 	direction: rtl;
@@ -82,9 +79,13 @@ a.swipe-overlay-out{
 	background: transparent;
 	padding: 0.5em 1em;
 	border-radius: 6px;
-	font-size: 20px;
+	/*font-size: 20px;*/
 	font-family: 'Ubuntu', sans-serif;
 	cursor: pointer;
+	-webkit-transition: 350ms ease;
+	-moz-transition: 350ms ease;
+	-ms-transition: 350ms ease;
+	-o-transition: 350ms ease;
 	transition: 0.35s ease;
 	display: inline-block;
 	text-decoration: blink;
@@ -93,6 +94,10 @@ a.swipe-overlay-out{
 }
 button.swipe-overlay-out::after,
 a.swipe-overlay-out::after {
+	-webkit-transition: 500ms ease;
+	-moz-transition: 500ms ease;
+	-ms-transition: 500ms ease;
+	-o-transition: 500ms ease;
 	transition: 0.5s ease;
 	transform: rotate(25deg);
 	top: -100%;
@@ -142,12 +147,19 @@ a.swipe-overlay-out > span {
 	font-size: 0.8em;
 	position: fixed;
 	z-index: 99;
-	bottom: calc(0.5em + 70px);
+	bottom: calc(0.5em + 50px); /* add 20px in js */
 	right: 0;
 	margin-left: 0.5em;
 	margin-right: 0.5em;
 	padding: 1.1em 2.1em 1.1em 1.1em;
 	border-radius: 6px;
+	display: none;
+	opacity: 0;
+	-webkit-transition: 500ms ease;
+	-moz-transition: 500ms ease;
+	-ms-transition: 500ms ease;
+	-o-transition: 500ms ease;
+	transition: 500ms ease;
 }
 #free_for_all_click_me_text_default:after {
 	content: "";

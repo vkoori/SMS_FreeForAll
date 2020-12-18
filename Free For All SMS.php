@@ -214,7 +214,7 @@ function php_styles() {
 	$smsQueriesClass = new smsQueries();
 	$setting = $smsQueriesClass->setting();
 	
-	echo '<style>
+	$style = '<style>
 	.free_for_all_color_default{
 		background-color: '.$setting->background.'!important;
 		color: '.$setting->foreground.'!important;
@@ -240,8 +240,30 @@ function php_styles() {
 	}
 	.swipe-overlay-out:hover{
 		box-shadow: inset 0 0 0 0 '.$setting->foreground.', 3px 3px 4px -1px '.$setting->background.'!important;
+	}';
+	if ($setting->pageid == 0) {
+		$style .='#sms-lightbox-load{
+					display: none;
+				}
+				#sms-lightbox{
+					bottom: calc(0.5em + 80px);
+					right: 0.5em;
+				}
+				#free_for_all_step_box{
+					font-size: 12px;
+				}';
+	} else {
+		$style .='#sms-lightbox-load, #sms-lightbox{
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+				}';
 	}
-	</style>';
+
+	$style .='</style>';
+
+	echo $style;
 
 	return;
 }

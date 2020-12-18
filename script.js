@@ -155,3 +155,10 @@ function updateTexts(res) {
 	var el2 = document.querySelector("#text");
 	choices2 = new Choices(el2);
 }
+setTimeout(function(){ 
+	if (document.getElementById("free_for_all_click_me_text_default")) {
+		document.getElementById("free_for_all_click_me_text_default").style.display = "block"; 
+		document.getElementById("free_for_all_click_me_text_default").style.opacity = "1";
+		document.getElementById("free_for_all_click_me_text_default").style.bottom = "calc(0.5em + 70px)";
+	}
+}, 3000);

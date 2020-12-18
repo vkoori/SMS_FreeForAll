@@ -24,6 +24,7 @@ register_activation_hook(__file__, 'installer');
 function sms_plugin_setup_menu(){
 	add_menu_page('پیامک رایگان', 'پیامک رایگان', 'manage_options', 'free-sms-setting', 'admin_sms_setting', 'dashicons-welcome-write-blog');
 	add_submenu_page( 'free-sms-setting', 'تنظیمات', 'تنظیمات', 'manage_options', 'free-sms-setting', 'admin_sms_setting');
+	add_submenu_page( 'free-sms-setting', 'ثبت متن پیامک', 'ثبت متن پیامک', 'manage_options', 'free-sms-add-text', 'admin_sms_add_text');
 	add_submenu_page( 'free-sms-setting', 'متن پیامک', 'متن پیامک', 'manage_options', 'free-sms-text', 'admin_sms_text');
 	add_submenu_page( 'free-sms-setting', 'گزارش ارسال', 'گزارش ارسال', 'manage_options', 'free-sms-report', 'admin_sms_report');
 }
@@ -89,9 +90,22 @@ function admin_sms_setting(){
 	echo $html;
 }
 
-function admin_sms_text () {
+function admin_sms_add_text () {
 	include(dirname(__FILE__).'/class.smsQueries.php');
 	$smsQueriesClass = new smsQueries();
+
+	if (sizeof($_POST) > 0) {
+		$subject = $_POST["subject"];
+		$message = $_POST["message"];
+		$subject_row = $smsQueriesClass->get_subject($subject);
+		if (sizeof($subject_row)==0)
+			$smsQueriesClass->insert_subjects("('".$subject."')");
+
+		$text = "((SELECT `id` FROM `free_sms_subject` WHERE `subject`='".$subject."'),'".$message."')";
+		$smsQueriesClass->insert_quotes($text);
+
+		echo '<p class="free_for_all_success">متن پیامک ها به روز رسانی شد.</p>';
+	}
 
 	if (sizeof($_FILES) > 0) {
 		include(dirname(__FILE__).'/class.upload-xlsx.php');
@@ -109,29 +123,51 @@ function admin_sms_text () {
 			$subjects = array();
 			$texts = array();
 			foreach ($rows as $row) {
-				if (!in_array("('".$row[1]."')", $subjects))
-					array_push($subjects, "('".$row[1]."')");
+				if (!in_array("('".$row[1]."')", $subjects)) {
+					$subject = $smsQueriesClass->get_subject($row[1]); # add for insert
+					if (sizeof($subject)==0) # add for insert
+						array_push($subjects, "('".$row[1]."')");
+				}
 				
-				array_push($texts, "(".(array_search("('".$row[1]."')", $subjects)+1).",'".$row[0]."')");
+				// array_push($texts, "(".(array_search("('".$row[1]."')", $subjects)+1).",'".$row[0]."')"); #comment for insert
+				array_push($texts, "((SELECT `id` FROM `free_sms_subject` WHERE `subject`='".$row[1]."'),'".$row[0]."')"); # add for insert
 			}
 			$subjects = implode(',', $subjects);
-			$smsQueriesClass->overwite_subjects($subjects);
+			// $smsQueriesClass->overwite_subjects($subjects); #comment for insert
+			$smsQueriesClass->insert_subjects($subjects); # add for insert
 
 			$texts = implode(',', $texts);
-			$smsQueriesClass->overwite_quotes($texts);
+			// $smsQueriesClass->overwite_quotes($texts); #comment for insert
+			$smsQueriesClass->insert_quotes($texts); # add for insert
+
+			echo '<p class="free_for_all_success">متن پیامک ها به روز رسانی شد.</p>';
+
 		} else {
 			echo SimpleXLSX::parseError();
 		}
 
+	}
 
+	include(dirname(__FILE__).'/class.free-sms-page.php');
+	$sms = new Sms_page();
+	$html = $sms->admin_sms_text();
+	echo $html;
+
+}
+
+function admin_sms_text () {
+	include(dirname(__FILE__).'/class.smsQueries.php');
+	$smsQueriesClass = new smsQueries();
+
+	if (sizeof($_POST) > 0) {
+		$id = $_POST["messageid"];
+		$smsQueriesClass->remove_quote($id);
 	}
 
 	$texts = $smsQueriesClass->all_texts();
 
 	include(dirname(__FILE__).'/class.free-sms-page.php');
 	$sms = new Sms_page();
-	$html = $sms->admin_sms_text();
-	echo $html;
 	$html = $sms->admin_sms_text2($texts);
 	echo $html;
 

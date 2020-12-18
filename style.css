@@ -246,3 +246,9 @@ input[type="text"].free_for_all_input, input[type="email"].free_for_all_input, i
     font-weight: 400;
     margin: 0 0 0.5rem 0;
 }
+.free_for_all_success{
+	color: #008000;
+	border: solid 1px green;
+	background: #d8e4d5;
+	padding: 1em;
+}

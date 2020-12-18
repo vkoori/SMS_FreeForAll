@@ -209,11 +209,21 @@ class smsQueries
 	 */
 	public function all_texts() {
 		global $wpdb;
-		$texts = $wpdb->get_results("SELECT `message`, `subject` FROM `free_sms_quote`
+		$texts = $wpdb->get_results("SELECT `free_sms_quote`.`id`, `message`, `subject` FROM `free_sms_quote`
 									INNER JOIN `free_sms_subject`
 									ON `subjectid`=`free_sms_subject`.`id`");
 
 		return $texts;
+	}
+
+	/**
+	 * 
+	 */
+	public function get_subject($subject) {
+		global $wpdb;
+		$subject = $wpdb->get_results("SELECT * FROM `free_sms_subject` WHERE `subject`='{$subject}'");
+
+		return $subject;
 	}
 
 	/**
@@ -232,6 +242,16 @@ class smsQueries
 	/**
 	 * 
 	 */
+	public function insert_subjects($subjects) {
+		global $wpdb;
+		$subjects = $wpdb->get_results("INSERT INTO `free_sms_subject` (`subject`) VALUES {$subjects}");
+
+		return $subjects;
+	}
+
+	/**
+	 * 
+	 */
 	public function overwite_quotes($quotes) {
 		global $wpdb;
 		$wpdb->query('DELETE FROM `free_sms_quote`');
@@ -240,6 +260,26 @@ class smsQueries
 		$quotes = $wpdb->get_results("INSERT INTO `free_sms_quote` (`subjectid`,`message`) VALUES {$quotes}");
 
 		return $quotes;
+	}
+
+	/**
+	 * 
+	 */
+	public function insert_quotes($quotes) {
+		global $wpdb;
+		$quotes = $wpdb->get_results("INSERT INTO `free_sms_quote` (`subjectid`,`message`) VALUES {$quotes}");
+
+		return $quotes;
+	}
+
+	/**
+	 * 
+	 */
+	public function remove_quote($id) {
+		global $wpdb;
+		$quote = $wpdb->query("DELETE FROM `free_sms_quote` WHERE `id`={$id}");
+
+		return $quote;
 	}
 
 	/**

@@ -195,29 +195,52 @@ class Sms_page
 		return '
 		<div class="wrap">
 			<h1 class="wp-heading-inline">متن پیامک ها</h1>
-			<form  method="post" enctype="multipart/form-data">
-				<p>ستون اول متن متعلق به پیامک ها و ستون دوم متعلق به دسته بندی است.</p>
-				<p>در متن پیامک ها به جای متغیرها از عبارت %s استفاده کنید.</p>
-				<table class="form-table" role="presentation">
-					<tbody>
-						<tr>
-							<th scope="row"><label for="pageid">فایل xlsx</label></th>
-							<td><input type="file" id="xlsx" name="xlsx"></input></td>
-						</tr>
-					</tbody>
-				</table>
-				<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="ذخیره سازی"></p>
-			</form>
+			<div class="card">
+				<h2>ثبت از طریق فایل اکسل</h2>
+				<form method="post" enctype="multipart/form-data">
+					<p>ستون اول متن متعلق به پیامک ها و ستون دوم متعلق به دسته بندی است.</p>
+					<p>در متن پیامک ها به جای متغیرها از عبارت %s استفاده کنید.</p>
+					<table class="form-table" role="presentation">
+						<tbody>
+							<tr>
+								<th scope="row"><label for="pageid">فایل xlsx</label></th>
+								<td><input type="file" id="xlsx" name="xlsx"></input></td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="ذخیره سازی"></p>
+				</form>
+			</div>
+			<div class="card">
+				<h2>ثبت بصورت دستی</h2>
+				<form method="post" accept-charset="utf-8">
+					<p>در متن پیامک ها به جای متغیرها از عبارت %s استفاده کنید.</p>
+					<table class="form-table" role="presentation">
+						<tbody>
+							<tr>
+								<th scope="row"><label for="subject">دسته بندی</label></th>
+								<td><input type="text" id="subject" name="subject"></input></td>
+							</tr>
+							<tr>
+								<th scope="row"><label for="message">متن پیامک</label></th>
+								<td><input type="text" id="message" name="message"></input></td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="ذخیره سازی"></p>
+				</form>
+			</div>
 		</div>';
 	}
 
 	public function admin_sms_text2($texts) {
 		$html = '<hr>
-		<table class="wp-list-table widefat fixed striped">
+		<table class="wp-list-table widefat striped">
 			<thead>
 				<tr>
 					<th><strong>موضوع</strong></th>
 					<th><strong>متن</strong></th>
+					<th><strong>حذف</strong></th>
 				</tr>
 			</thead>
 			<tbody>';
@@ -226,6 +249,12 @@ class Sms_page
 					<tr>
 						<td>'.$text->subject.'</td>
 						<td>'.$text->message.'</td>
+						<td>
+							<form method="POST" accept-charset="utf-8">
+								<input type="hidden" name="messageid" value="'.$text->id.'">
+								<input type="submit" value="حذف">
+							</form>
+						</td>
 					</tr>';
 				}
 			$html .= '</tbody>

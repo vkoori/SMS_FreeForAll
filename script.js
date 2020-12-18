@@ -1,5 +1,6 @@
 function free_for_all_click_me_close(id) {
-	document.getElementById(id).remove();
+	var child = document.getElementById(id);
+	child.parentNode.removeChild(child);
 }
 
 function smsLoading() {

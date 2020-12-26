@@ -123,19 +123,20 @@ a.swipe-overlay-out > span {
 .free_for_all_row{
 	margin: 1em;
 }
+.free_for_all_col3{
+	width: calc(33% - 3px);
+	margin: 2px;
+}
 .relative{
 	position: relative;
 }
 #sms-error{
 	color: #c53d3d;
 }
-#mobile{
-	padding-left: 2em;
-}
-#mobile09{
+#free-sms-back{
 	position: absolute;
-	bottom: 2px;
-	left: 4px;
+	left: 2em;
+	bottom: 2em;
 }
 #free_for_all_click_me_default{
 	position: fixed;
@@ -252,6 +253,7 @@ input[type="text"].free_for_all_input, input[type="email"].free_for_all_input, i
 	background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
 	background-size: 1rem 1rem;
 }
+.free_for_all_col3 label,
 .free_for_all_row label {
     display: block;
     font-size: 0.9em;

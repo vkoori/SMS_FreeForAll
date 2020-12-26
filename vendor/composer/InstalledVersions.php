@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '0a268a6a20591d4afaae73e29a76fa72ac43494d',
+    'reference' => '51595559f92a74d62cee48adf9b86d015d3f0b42',
     'name' => '__root__',
   ),
   'versions' => 
@@ -31,61 +31,52 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '0a268a6a20591d4afaae73e29a76fa72ac43494d',
+      'reference' => '51595559f92a74d62cee48adf9b86d015d3f0b42',
     ),
-    'guzzlehttp/guzzle' => 
+    'maennchen/zipstream-php' => 
     array (
-      'pretty_version' => '7.0.0',
-      'version' => '7.0.0.0',
+      'pretty_version' => '2.1.0',
+      'version' => '2.1.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '414c24961042f6616fb43e23fa69a785f9fc053e',
+      'reference' => 'c4c5803cc1f93df3d2448478ef79394a5981cc58',
     ),
-    'guzzlehttp/promises' => 
+    'markbaker/complex' => 
     array (
-      'pretty_version' => '1.4.0',
-      'version' => '1.4.0.0',
+      'pretty_version' => '2.0.0',
+      'version' => '2.0.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '60d379c243457e073cff02bc323a2a86cb355631',
+      'reference' => '9999f1432fae467bc93c53f357105b4c31bb994c',
     ),
-    'guzzlehttp/psr7' => 
+    'markbaker/matrix' => 
     array (
-      'pretty_version' => '1.7.0',
-      'version' => '1.7.0.0',
+      'pretty_version' => '2.0.0',
+      'version' => '2.0.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '53330f47520498c0ae1f61f7e2c90f55690c06a3',
+      'reference' => '9567d9c4c519fbe40de01dbd1e4469dbbb66f46a',
     ),
-    'pear/http_request2' => 
+    'myclabs/php-enum' => 
     array (
-      'pretty_version' => 'v2.2.1',
-      'version' => '2.2.1.0',
+      'pretty_version' => '1.7.7',
+      'version' => '1.7.7.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'd6c81670c504045248c1afdf896bb9a3288158de',
+      'reference' => 'd178027d1e679832db9f38248fcc7200647dc2b7',
     ),
-    'pear/net_url2' => 
+    'phpoffice/phpspreadsheet' => 
     array (
-      'pretty_version' => 'v2.2.2',
-      'version' => '2.2.2.0',
+      'pretty_version' => '1.15.0',
+      'version' => '1.15.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '07fd055820dbf466ee3990abe96d0e40a8791f9d',
-    ),
-    'pear/pear_exception' => 
-    array (
-      'pretty_version' => 'v1.0.1',
-      'version' => '1.0.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7',
+      'reference' => 'a8e8068b31b8119e1daa5b1eb5715a3a8ea8305f',
     ),
     'psr/http-client' => 
     array (
@@ -96,12 +87,14 @@ private static $installed = array (
       ),
       'reference' => '2dfb5f6c5eff0e91e20e913f8c5452ed95b86621',
     ),
-    'psr/http-client-implementation' => 
+    'psr/http-factory' => 
     array (
-      'provided' => 
+      'pretty_version' => '1.0.1',
+      'version' => '1.0.1.0',
+      'aliases' => 
       array (
-        0 => '1.0',
       ),
+      'reference' => '12ac7fcd07e5b077433f5f2bee95b3a771bf61be',
     ),
     'psr/http-message' => 
     array (
@@ -112,21 +105,23 @@ private static $installed = array (
       ),
       'reference' => 'f6561bf28d520154e4b0ec72be95418abe6d9363',
     ),
-    'psr/http-message-implementation' => 
+    'psr/simple-cache' => 
     array (
-      'provided' => 
-      array (
-        0 => '1.0',
-      ),
-    ),
-    'ralouphie/getallheaders' => 
-    array (
-      'pretty_version' => '3.0.3',
-      'version' => '3.0.3.0',
+      'pretty_version' => '1.0.1',
+      'version' => '1.0.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '120b605dfeb996808c31b6477290a714d356e822',
+      'reference' => '408d5eafb83c57f6365a3ca330ff23aa4a5fa39b',
+    ),
+    'symfony/polyfill-mbstring' => 
+    array (
+      'pretty_version' => 'v1.20.0',
+      'version' => '1.20.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '39d483bdf39be819deabf04ec872eb0b2410b531',
     ),
   ),
 );

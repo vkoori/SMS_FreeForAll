@@ -93,8 +93,8 @@ function updateForm(res) {
 	if (document.getElementById("precent-label"))
 		free_for_all_click_me_close("precent-label");
 	document.getElementById("sms-error").innerText = '';
-	if (myCountDown)
-		clearInterval(myCountDown);
+	if (document.getElementById("free-sms-back"))
+		free_for_all_click_me_close("free-sms-back");
 	
 	var res = JSON.parse(res);
 	if (res['error']) {
@@ -111,8 +111,12 @@ function updateForm(res) {
 	document.getElementById("progress-load").innerText = res['progress-bar'];
 	document.getElementById("free_for_all_step_title").innerHTML = res['title'];
 	document.getElementById("free_for_all_step_form").innerHTML = res['inner-form'];
+	if (res['back-btn'])
+		document.getElementById("free_for_all_step_form").insertAdjacentHTML('afterend', res['back-btn']);
 	if (res['script'])
 		eval(res['script']);
+	if (myCountDown && !document.getElementById('free_sms_psw'))
+		clearInterval(myCountDown);
 	countDown();
 }
 

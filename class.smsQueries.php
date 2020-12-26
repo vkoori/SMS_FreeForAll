@@ -297,6 +297,26 @@ class smsQueries
 	/**
 	 * 
 	 */
+	public function update_quote($id, $message) {
+		global $wpdb;
+		$quote = $wpdb->get_results("UPDATE `free_sms_quote` SET `message`='{$message}' WHERE `id`={$id}");
+
+		return $quote;
+	}
+
+	/**
+	 * 
+	 */
+	public function get_quote($id) {
+		global $wpdb;
+		$quote = $wpdb->get_results("SELECT * FROM `free_sms_quote` WHERE `id`={$id}");
+
+		return $quote;
+	}
+
+	/**
+	 * 
+	 */
 	public function count_of_use_sms($userid) {
 		global $wpdb;
 		$smsCount = $wpdb->get_results("SELECT COUNT(`id`) AS `count` FROM `free_sms_sms` WHERE `userid`={$userid}");
@@ -344,6 +364,8 @@ class smsQueries
 					$data, array(
 						'%d',
 						'%s',
+						'%s',
+						'%s',
 						'%s'
 					) 
 				);
@@ -356,12 +378,28 @@ class smsQueries
 	 */
 	public function report_sms() {
 		global $wpdb;
-		$messages = $wpdb->get_results("SELECT `quote`, `to`, `send_time`, `mobile`, `first_name`, `last_name`, `sex`
+		$messages = $wpdb->get_results("SELECT `quote`, `to`, `to_name`, `to_family`, `send_time`, `mobile`, `first_name`, `last_name`, `sex`
 									FROM `free_sms_sms` 
 									INNER JOIN `free_sms_user`
 									ON `free_sms_user`.`id`=`free_sms_sms`.`userid`
 									LEFT JOIN `free_sms_profile`
 									ON `free_sms_profile`.`userid`=`free_sms_sms`.`userid`");
+
+		return $messages;
+	}
+
+	/**
+	 * 
+	 */
+	public function report_sms_range($from, $to) {
+		global $wpdb;
+		$messages = $wpdb->get_results("SELECT `quote`, `to`, `to_name`, `to_family`, `send_time`, `mobile`, `first_name`, `last_name`, `sex`
+									FROM `free_sms_sms` 
+									INNER JOIN `free_sms_user`
+									ON `free_sms_user`.`id`=`free_sms_sms`.`userid`
+									LEFT JOIN `free_sms_profile`
+									ON `free_sms_profile`.`userid`=`free_sms_sms`.`userid`
+									WHERE `create_at` BETWEEN '{$from}' AND '{$to}'");
 
 		return $messages;
 	}

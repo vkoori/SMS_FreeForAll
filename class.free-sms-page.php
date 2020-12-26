@@ -247,6 +247,7 @@ class Sms_page
 					<th><strong>موضوع</strong></th>
 					<th><strong>متن</strong></th>
 					<th><strong>حذف</strong></th>
+					<th><strong>ویرایش</strong></th>
 				</tr>
 			</thead>
 			<tbody>';
@@ -261,10 +262,29 @@ class Sms_page
 								<input type="submit" value="حذف">
 							</form>
 						</td>
+						<td>
+							<a href="'.add_query_arg('id', $text->id, get_admin_url().'admin.php?page='.$_GET['page']).'" title="ویرایش">ویرایش</a>
+						</td>
 					</tr>';
 				}
 			$html .= '</tbody>
-		</table">';
+		</table>';
+
+		return $html;
+	}
+	public function edit_text($text) {
+		$html = '<form action="'.get_admin_url().'admin.php?page='.$_GET['page'].'" method="POST" accept-charset="utf-8">
+			<input type="hidden" name="id" value="'.$_GET['id'].'" />
+			<table class="form-table" role="presentation">
+				<tbody>
+					<tr>
+						<th scope="row" style="vertical-align: middle;"><label for="message">متن پیامک</label></th>
+						<td><textarea id="message" name="message" class="regular-text" rows="5">'.$text[0]->message.'</textarea></td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="به روزرسانی"></p>
+		</form>';
 
 		return $html;
 	}
@@ -274,8 +294,9 @@ class Sms_page
 					<thead>
 						<tr>
 							<th><strong>from</strong></th>
-							<th><strong>name</strong></th>
+							<th><strong>from name</strong></th>
 							<th><strong>to</strong></th>
+							<th><strong>to name</strong></th>
 							<th><strong>messages</strong></th>
 							<th><strong>time</strong></th>
 						</tr>
@@ -286,12 +307,30 @@ class Sms_page
 							<td>'.$m->mobile.'</td>
 							<td>'.$m->first_name.' '.$m->last_name.'</td>
 							<td>'.$m->to.'</td>
+							<td>'.$m->to_name.' '.$m->to_family.'</td>
 							<td>'.$m->quote.'</td>
 							<td>'.$m->send_time.'</td>
 						</tr>';
 					}
 					$html .= '</tbody>
-				</table>';
+				</table>
+				<form class="card" action="" method="POST" accept-charset="utf-8">
+					<h2>خروجی اکسل: </h2>
+					<table class="form-table" role="presentation">
+							<tbody>
+								<tr>
+									<th scope="row"><label for="from">از تاریخ</label></th>
+									<td><input name="from" type="datetime-local" id="from" class="regular-text"></td>
+								</tr>
+								<tr>
+									<th scope="row"><label for="to">تا تاریخ</label></th>
+									<td><input name="to" type="datetime-local" id="to" class="regular-text"></td>
+								</tr>
+							</tbody>
+						</table>
+						<input type="hidden" name="download" value="download" />
+						<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="دریافت"></p>
+				</form>';
 		return $html;
 	}
 }

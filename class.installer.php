@@ -76,6 +76,8 @@ class Installer
 						`userid` bigint(20) UNSIGNED NOT NULL,
 						`quote` varchar(255) NOT NULL,
 						`to` char(11) NOT NULL,
+						`to_name` varchar(255) NOT NULL,
+						`to_family` varchar(255) NOT NULL,
 						`create_at` datetime NOT NULL DEFAULT current_timestamp(),
 						`send_time` datetime NOT NULL DEFAULT current_timestamp(),
 						FOREIGN KEY (`userid`) REFERENCES `free_sms_user` (`id`) ON DELETE CASCADE
@@ -120,7 +122,7 @@ class Installer
 						array(
 							"signature" => "این سرویس کادویی از طرف میزبان پیامک میباشد.",
 							"profile" => array(),
-							"gift_text" => "میزبان پیامک مفتخر است که به هر شماره 3 پیامک رایگان در هر 24 ساعت ارائه دهد. کد استفاده از سرویس : "
+							"gift_text" => "میزبان پیامک مفتخر است که به هر شماره 3 پیامک رایگان در هر 24 ساعت ارائه دهد. کد استفاده از سرویس : %s"
 						)
 					)
 				),

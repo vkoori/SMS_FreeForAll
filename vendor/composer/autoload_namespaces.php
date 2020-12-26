@@ -6,5 +6,4 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'HTTP_Request2' => array($vendorDir . '/pear/http_request2'),
 );

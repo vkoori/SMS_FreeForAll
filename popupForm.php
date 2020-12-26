@@ -17,8 +17,7 @@
 			<form id="free_for_all_step_form" action="<?php echo admin_url('admin-ajax.php') ?>" method="POST" accept-charset="utf-8" onsubmit="return nextStep(this);">
 				<div class="free_for_all_row relative">
 					<label for="mobile">شماره موبایل:</label>
-					<input dir="ltr" class="free_for_all_input free_for_all_input_default" type="number" name="mobile" id="mobile">
-					<span id="mobile09">09</span>
+					<input dir="ltr" class="free_for_all_input free_for_all_input_default" placeholder="09 ××× ×× ××" type="number" name="mobile" id="mobile">
 				</div>
 				<div class="free_for_all_row">
 					<button type="submit" class="swipe-overlay-out"><span>بعدی</span></button>

@@ -159,9 +159,27 @@ function admin_sms_text () {
 	include(dirname(__FILE__).'/class.smsQueries.php');
 	$smsQueriesClass = new smsQueries();
 
+	if ($_GET["id"]) {
+		$id = $_GET["id"];
+		$text = $smsQueriesClass->get_quote($id);
+
+		include(dirname(__FILE__).'/class.free-sms-page.php');
+		$sms = new Sms_page();
+		$html = $sms->edit_text($text);
+		echo $html;
+		return;
+	}
+
 	if (sizeof($_POST) > 0) {
-		$id = $_POST["messageid"];
-		$smsQueriesClass->remove_quote($id);
+		if (isset($_POST["id"])) {
+			$id = $_POST["id"];
+			$message = $_POST["message"];
+			$text = $smsQueriesClass->update_quote($id, $message);
+		} else {
+			$id = $_POST["messageid"];
+			$smsQueriesClass->remove_quote($id);
+			
+		}
 	}
 
 	$texts = $smsQueriesClass->all_texts();
@@ -185,6 +203,56 @@ function admin_sms_report() {
 }
 
 add_action('admin_menu', 'sms_plugin_setup_menu');
+
+
+add_action( 'plugins_loaded', function() {
+    if ( isset( $_POST['download'] ) ) {
+		include(dirname(__FILE__).'/class.smsQueries.php');
+		$smsQueriesClass = new smsQueries();
+
+		$from = $_POST['from'];
+		$to = $_POST['to'];
+		$messages = $smsQueriesClass->report_sms_range($from, $to);
+
+		// $csv_output = '';
+		// foreach($messages as $row){
+		// 	foreach ($row as $cell) {
+		// 		$csv_output .= ','.$cell;
+		// 	}
+		// 	$csv_output .= "\n";
+		// }
+		// var_dump($csv_output);
+
+		$filename = $from."_".$to.".xls";
+		header("Content-Type: application/vnd.ms-excel");
+		header("Content-disposition: xls" . date("Y-m-d") . ".xls");
+		header("Content-Disposition: attachment; filename=\"$filename\"");
+
+		$column_names = false;
+		// run loop through each row in $customers_data
+		foreach($messages as $row) {
+		    $row = (array) $row;
+			if(!$column_names) {
+				echo implode("\t", array_keys($row)) . "\n";
+				$column_names = true;
+			}
+			// The array_walk() function runs each array element in a user-defined function.
+			array_walk($row, 'filterCustomerData');
+			$row[0] = mb_convert_encoding($row[0], 'UTF-16', 'UTF-8');
+			$csv = implode("\t", array_values($row)) . "\n";
+			echo $csv;
+			exit();
+		}
+		exit;
+    }
+});
+
+add_action( 'plugins_loaded', 'filterCustomerData');
+function filterCustomerData(&$str) {
+	$str = preg_replace("/\t/", "\\t", $str);
+	$str = preg_replace("/\r?\n/", "\\n", $str);
+	if(strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"';
+}
 
 /*
 * create sms suggestion in all pages

@@ -87,7 +87,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			);
 
 			$sms = $smsQueriesClass->sendsms($data);
-			// $result['sms'] = $sms;
+			$result['sms'] = $sms;
 		}
 
 		$key_generate_date = (gettype($user) == "array") ? $user['key_generate_date'] : $user->key_generate_date ;

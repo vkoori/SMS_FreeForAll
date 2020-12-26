@@ -98,9 +98,21 @@ class smsQueries
 		));
 
 		$response = curl_exec($curl);
+		if (curl_errno($curl))
+			$response = curl_error($curl);
 
 		curl_close($curl);
 		return $response;
+
+// 		require dirname(__FILE__).'/vendor/autoload.php';
+// 		$client = new \GuzzleHttp\Client();
+// 		$client->post(
+// 		    'http://my.mizbansms.ir/wssms.asmx/sendsms',
+// 		    array(
+// 		        'form_params' => $data
+// 		    )
+// 		);
+// 		return 1;
 	}
 
 	/**

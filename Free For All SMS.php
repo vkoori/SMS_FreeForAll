@@ -190,11 +190,10 @@ add_action('admin_menu', 'sms_plugin_setup_menu');
 * create sms suggestion in all pages
 */
 function insert_sms_box() {
-	if (!is_page()) {
-		// include(dirname(__FILE__).'/class.smsQueries.php');
-		$smsQueriesClass = new smsQueries();
-		$setting = $smsQueriesClass->setting();
-
+    // include(dirname(__FILE__).'/class.smsQueries.php');
+	$smsQueriesClass = new smsQueries();
+	$setting = $smsQueriesClass->setting();
+	if (get_the_ID() != $setting->pageid) {
 		include(dirname(__FILE__).'/class.free-sms-page.php');
 		$sms = new Sms_page();
 		$html = $sms->fixed_link($setting);

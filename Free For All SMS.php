@@ -204,8 +204,10 @@ function admin_sms_report() {
 
 add_action('admin_menu', 'sms_plugin_setup_menu');
 
-
-add_action( 'plugins_loaded', function() {
+/*
+*  download excel
+*/
+function download_excel() {
     if ( isset( $_POST['download'] ) ) {
 		include(dirname(__FILE__).'/class.smsQueries.php');
 		$smsQueriesClass = new smsQueries();
@@ -214,45 +216,34 @@ add_action( 'plugins_loaded', function() {
 		$to = $_POST['to'];
 		$messages = $smsQueriesClass->report_sms_range($from, $to);
 
-		// $csv_output = '';
-		// foreach($messages as $row){
-		// 	foreach ($row as $cell) {
-		// 		$csv_output .= ','.$cell;
-		// 	}
-		// 	$csv_output .= "\n";
-		// }
-		// var_dump($csv_output);
 
 		$filename = $from."_".$to.".xls";
-		header("Content-Type: application/vnd.ms-excel");
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-disposition: xls" . date("Y-m-d") . ".xls");
 		header("Content-Disposition: attachment; filename=\"$filename\"");
+		header("Pragma: no-cache");
+    	echo "\xEF\xBB\xBF"; //UTF-8 BOM
 
-		$column_names = false;
+		echo implode(",", array("متن پیامک", "شماره گیرنده", "نام گیرنده", "فامیلی گیرنده", "زمان ارسال", "شماره فرستنده", "نام فرستنده", "فامیلی فرستنده")) . "\n";
 		// run loop through each row in $customers_data
 		foreach($messages as $row) {
 		    $row = (array) $row;
-			if(!$column_names) {
-				echo implode("\t", array_keys($row)) . "\n";
-				$column_names = true;
-			}
 			// The array_walk() function runs each array element in a user-defined function.
 			array_walk($row, 'filterCustomerData');
-			$row[0] = mb_convert_encoding($row[0], 'UTF-16', 'UTF-8');
-			$csv = implode("\t", array_values($row)) . "\n";
+			$csv = implode(",", array_values($row)) . "\n";
 			echo $csv;
-			exit();
 		}
-		exit;
+		exit();
     }
-});
+}
+add_action( 'plugins_loaded', 'download_excel');
 
-add_action( 'plugins_loaded', 'filterCustomerData');
 function filterCustomerData(&$str) {
 	$str = preg_replace("/\t/", "\\t", $str);
 	$str = preg_replace("/\r?\n/", "\\n", $str);
 	if(strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"';
 }
+add_action( 'plugins_loaded', 'filterCustomerData');
 
 /*
 * create sms suggestion in all pages

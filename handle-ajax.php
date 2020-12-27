@@ -133,22 +133,23 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			if (in_array('fname', $profile_setting) AND (is_null($profile[0]->first_name) OR sizeof($profile)==0)) {
 				$result["inner-form"] .= '
 					<div class="free_for_all_row">
-						<label for="fname">نام</label>
+						<label for="fname">نام *</label>
 						<input class="d-ib free_for_all_input free_for_all_input_default" type="text" name="fname" id="fname" required="required">
 					</div>';
 			}
 			if (in_array('lname', $profile_setting) AND (is_null($profile[0]->last_name) OR sizeof($profile)==0)) {
 				$result["inner-form"] .= '
 					<div class="free_for_all_row">
-						<label for="lname">نام خانوادگی</label>
+						<label for="lname">نام خانوادگی *</label>
 						<input class="d-ib free_for_all_input free_for_all_input_default" type="text" name="lname" id="lname" required="required">
 					</div>';
 			}
 			if (in_array('sex', $profile_setting) AND (is_null($profile[0]->sex) OR sizeof($profile)==0)) {
 				$result["inner-form"] .= '
 					<div class="free_for_all_row">
-						<label for="sex">جنسیت</label>
-						<select class="d-ib free_for_all_input free_for_all_input_default" name="sex" id="sex">
+						<label for="sex">جنسیت *</label>
+						<select class="d-ib free_for_all_input free_for_all_input_default" name="sex" id="sex" required="required">
+							<option value="">انتخاب کنید</option>
 							<option value="1">مرد</option>
 							<option value="0">زن</option>
 						</select>
@@ -159,7 +160,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		$subjects = $smsQueriesClass->get_subjects();
 		$result["inner-form"] .= '
 			<div class="free_for_all_row">
-				<label for="subject">موضوع</label>
+				<label for="subject">موضوع *</label>
 				<select class="d-ib free_for_all_input free_for_all_input_default" name="subject" id="subject" onchange="getTexts(this.value);" required="required">
 					<option value="">انتخاب کنید</option>';
 					foreach ($subjects as $s) {
@@ -168,7 +169,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				$result["inner-form"] .= '</select>
 			</div>
 			<div class="free_for_all_row">
-				<label for="text">متن پیامک</label>
+				<label for="text">متن پیامک *</label>
 				<select class="d-ib free_for_all_input free_for_all_input_default" name="text" id="text" required="required">
 				</select>
 			</div>
